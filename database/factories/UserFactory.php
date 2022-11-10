@@ -46,14 +46,14 @@ class UserFactory extends Factory
     public function unverified_account()
     {
         return $this->state(fn (array $attributes) => [
-            'verified' => false,
+            'verified_at' => false,
         ]);
     }
 
     public function verified_account()
     {
         return $this->state(fn (array $attributes) => [
-            'verified' => true,
+            'verified_at' => fake()->dateTimeBetween('-2 months', 'now'),
         ]);
     }
 
@@ -67,7 +67,7 @@ class UserFactory extends Factory
     public function unprotected()
     {
         return $this->state(fn (array $attributes) => [
-            'protected' => true,
+            'protected' => false,
         ]);
     }
 }

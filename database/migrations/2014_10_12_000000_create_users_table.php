@@ -24,7 +24,7 @@ return new class extends Migration
             $table->boolean('protected')->default(false);
             $table->string('url')->nullable();
             $table->string('password');
-            $table->boolean('verified')->default(false);
+            $table->timestamp('verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

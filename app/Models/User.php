@@ -30,23 +30,17 @@ class User extends Authenticatable
         'password',
     ];
 
-    protected $guarded = ['verified'];
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    protected $guarded = ['verified_at'];
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
+        'protected' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
+
+    protected $dates = ['verified_at'];
 }
