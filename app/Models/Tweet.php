@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\TweetCreatedEvent;
 use App\Traits\HasSnowflakeAsPrimaryKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +39,10 @@ class Tweet extends Model
         'reply_settings' => 'array',
         'possibly_sensitive' => 'boolean',
         'withheld' => 'array'
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => TweetCreatedEvent::class,
     ];
 
     public function author(): BelongsTo

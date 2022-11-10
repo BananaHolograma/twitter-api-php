@@ -8,3 +8,8 @@
 -   Tweets can be judged and reviewed as possibly sensitive
 -   Tweet reply settings can be defined as: everyone, mentioned_users, followers
 -   The tweet has a source field that reflect where was created.
+
+## MORE THINGS
+
+-   When a tweet is being created add default values for metrics and edit remainings
+-   reply settings must be a enum

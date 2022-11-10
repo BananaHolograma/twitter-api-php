@@ -18,14 +18,14 @@ return new class extends Migration
             $table->foreignId('author_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('in_reply_to_author_id')->nullable()->constrained('users');
             $table->string('text', 140)->index();
-            $table->json('edit_history_tweet_ids');
-            $table->json('edit_controls');
-            $table->json('public_metrics');
-            $table->json('non_public_metrics');
-            $table->json('organic_metrics');
-            $table->json('promoted_metrics');
-            $table->json('reply_settings');
-            $table->char('lang', 8)->index();
+            $table->json('edit_history_tweet_ids')->nullable();
+            $table->json('edit_controls')->nullable();
+            $table->json('public_metrics')->nullable();
+            $table->json('non_public_metrics')->nullable();
+            $table->json('organic_metrics')->nullable();
+            $table->json('promoted_metrics')->nullable();
+            $table->string('reply_settings')->default('everyone');
+            $table->string('lang', 8)->index();
             $table->boolean('possibly_sensitive')->default(false);
             $table->string('source')->default('Twitter Web App');
             $table->json('withheld')->nullable();
@@ -33,7 +33,7 @@ return new class extends Migration
         });
 
         Schema::table('tweets', function (Blueprint $table) {
-            $table->foreignId('conversation_id')->after('in_reply_to_author_id')->constrained('tweets');
+            $table->foreignId('conversation_id')->after('in_reply_to_author_id')->nullable()->constrained('tweets');
         });
     }
 
