@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\HasSnowflakeAsPrimaryKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -43,4 +44,9 @@ class User extends Authenticatable
     ];
 
     protected $dates = ['verified_at'];
+
+    public function tweets(): HasMany
+    {
+        return $this->hasMany(Tweet::class, 'author_id', 'id');
+    }
 }
