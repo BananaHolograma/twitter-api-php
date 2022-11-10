@@ -47,16 +47,16 @@ class Tweet extends Model
 
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'author_id');
+        return $this->belongsTo(User::class, 'author_id', 'id');
     }
 
     public function authorReplied(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'in_reply_to_author_id');
+        return $this->belongsTo(User::class, 'in_reply_to_author_id', 'id');
     }
 
     public function originalConversation(): BelongsTo
     {
-        return $this->belongsTo(Tweet::class, 'id', 'conversation_id');
+        return $this->belongsTo(Tweet::class, 'conversation_id', 'id');
     }
 }

@@ -17,12 +17,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(100)->create();
-        User::factory(50)->verified_account()->create();
-        $user = User::factory()->create([
-            'email' => 'twitter@admin.com',
-        ]);
-
-        Tweet::factory()->create(['author_id' => $user->getKey()]);
+        User::factory(25)
+            ->has(Tweet::factory()->count(fake()->numberBetween(1, 25)), 'tweets')
+            ->create();
+        User::factory(25)->has(Tweet::factory()->count(fake()->numberBetween(1, 25)), 'tweets')
+            ->verified_account()
+            ->create();
     }
 }
