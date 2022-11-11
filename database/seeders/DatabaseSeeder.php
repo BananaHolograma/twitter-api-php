@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         User::factory(25)
             ->has(Tweet::factory()->count(fake()->numberBetween(1, 25)), 'tweets')
             ->create();
-        User::factory(25)->has(Tweet::factory()->count(fake()->numberBetween(1, 25)), 'tweets')
+        User::factory(25)
+            ->has(Tweet::factory()->count(fake()->numberBetween(1, 25)), 'tweets')
             ->verified_account()
             ->create();
     }

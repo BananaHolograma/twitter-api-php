@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\HasSnowflakeAsPrimaryKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -48,5 +49,10 @@ class User extends Authenticatable
     public function tweets(): HasMany
     {
         return $this->hasMany(Tweet::class, 'author_id', 'id');
+    }
+
+    public function likedTweets(): BelongsToMany
+    {
+        return $this->belongsToMany(Tweet::class,  'user_tweet_likes')->withTimestamps();
     }
 }

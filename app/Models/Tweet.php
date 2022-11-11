@@ -7,6 +7,7 @@ use App\Traits\HasSnowflakeAsPrimaryKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tweet extends Model
 {
@@ -58,5 +59,10 @@ class Tweet extends Model
     public function originalConversation(): BelongsTo
     {
         return $this->belongsTo(Tweet::class, 'conversation_id', 'id');
+    }
+
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_tweet_likes')->withTimestamps();
     }
 }
