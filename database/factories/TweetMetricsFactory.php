@@ -17,13 +17,13 @@ class TweetMetricsFactory extends Factory
     public function definition()
     {
         return [
-            'impression_count' => fake()->numberBetween(0, 10000),
-            'reply_count' => fake()->numberBetween(0, 10000),
-            'like_count' => fake()->numberBetween(0, 10000),
-            'retweet_count' => fake()->numberBetween(0, 10000),
-            'quote_count' => fake()->numberBetween(0, 10000),
-            'url_link_clicks' => fake()->numberBetween(0, 10000),
-            'user_profile_clicks' => fake()->numberBetween(0, 10000),
+            'impression_count' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
+            'reply_count' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
+            'like_count' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
+            'retweet_count' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
+            'quote_count' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
+            'url_link_clicks' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
+            'user_profile_clicks' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
         ];
     }
 
