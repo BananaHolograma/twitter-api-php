@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\TweetCreatedEvent;
+use App\Models\TweetMetrics;
+use Illuminate\Support\Facades\DB;
 
 class TweetEventSubscriber
 {
@@ -11,50 +13,27 @@ class TweetEventSubscriber
      */
     public function handleTweetCreation(TweetCreatedEvent $event)
     {
-        $tweet = $event->tweet;
+        DB::transaction(function () use ($event) {
+            $tweet = $event->tweet;
 
-        $tweet->public_metrics = [
-            "retweet_count" => 0,
-            "reply_count" => 0,
-            "like_count" => 0,
-            "quote_count" => 0
-        ];
+            if ($tweet->wasRecentlyCreated) {
+                if (! $tweet->metrics()->exists()) {
+                    $tweet->metrics()->save(new TweetMetrics);
+                }
 
-        $tweet->non_public_metrics = [
-            "impression_count" => 0,
-            "url_link_clicks" => 0,
-            "user_profile_clicks" => 0
-        ];
-
-        $tweet->organic_metrics = [
-            "impression_count" =>  0,
-            "like_count" =>  0,
-            "reply_count" =>  0,
-            "retweet_count" =>  0,
-            "url_link_clicks" =>  0,
-            "user_profile_clicks" =>  0
-        ];
-
-        $tweet->promoted_metrics = [
-            "impression_count" => 0,
-            "like_count" => 0,
-            "reply_count" => 0,
-            "retweet_count" => 0,
-            "url_link_clicks" => 0,
-            "user_profile_clicks" => 0
-        ];
-
-        if (is_null($tweet->edit_controls)) {
-            $tweet->edit_controls = [
-                "edits_remaining" => 5,
-                "is_edit_eligible" => true,
-                "editable_until" => now()->addMinutes(30)->toDateTimeString(),
-            ];
-        }
-
-        $tweet->save();
+                if (is_null($tweet->edit_controls)) {
+                    $tweet->edit_controls = [
+                        'edits_remaining' => 5,
+                        'is_edit_eligible' => true,
+                        'editable_until' => now()
+                            ->addMinutes(30)
+                            ->toDateTimeString(),
+                    ];
+                }
+                $tweet->save();
+            }
+        });
     }
-
 
     /**
      * Register the listeners for the subscriber.

@@ -53,6 +53,6 @@ class User extends Authenticatable
 
     public function likedTweets(): BelongsToMany
     {
-        return $this->belongsToMany(Tweet::class,  'user_tweet_likes')->withTimestamps();
+        return $this->belongsToMany(Tweet::class, 'user_tweet_likes')->withTimestamps();
     }
 }

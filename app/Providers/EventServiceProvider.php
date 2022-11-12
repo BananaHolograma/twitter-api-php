@@ -22,8 +22,9 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     protected $subscribe = [
-        TweetEventSubscriber::class
+        TweetEventSubscriber::class,
     ];
+
     /**
      * Register any events for your application.
      *

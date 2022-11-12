@@ -20,10 +20,6 @@ return new class extends Migration
             $table->string('text', 140)->index();
             $table->json('edit_history_tweet_ids')->nullable();
             $table->json('edit_controls')->nullable();
-            $table->json('public_metrics')->nullable();
-            $table->json('non_public_metrics')->nullable();
-            $table->json('organic_metrics')->nullable();
-            $table->json('promoted_metrics')->nullable();
             $table->string('reply_settings')->default('everyone');
             $table->string('lang', 8)->index();
             $table->boolean('possibly_sensitive')->default(false);
