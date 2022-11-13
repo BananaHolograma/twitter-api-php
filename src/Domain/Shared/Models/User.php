@@ -10,8 +10,8 @@ use Domain\Tweets\Models\Tweet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -56,6 +56,16 @@ class User extends Authenticatable
     public function likedTweets(): BelongsToMany
     {
         return $this->belongsToMany(Tweet::class, 'user_tweet_likes')->withTimestamps();
+    }
+
+    public function mutedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'mutes', 'muted_user_id', 'user_id', 'id')->withTimestamps();
+    }
+
+    public function blockedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'blocks', 'blocked_user_id', 'user_id', 'id')->withTimestamps();
     }
 
     protected static function newFactory()

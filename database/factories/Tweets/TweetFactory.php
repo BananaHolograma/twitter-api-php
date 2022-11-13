@@ -4,7 +4,8 @@ namespace Database\Factories\Tweets;
 
 use Domain\Shared\Models\User;
 use Domain\Tweets\Enums\ReplySettingEnum;
-use Domain\Tweets\Models\{Tweet, TweetMetrics};
+use Domain\Tweets\Models\Tweet;
+use Domain\Tweets\Models\TweetMetrics;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -12,8 +13,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TweetFactory extends Factory
 {
-
     protected $model = Tweet::class;
+
     /**
      * Define the model's default state.
      *
@@ -37,7 +38,7 @@ class TweetFactory extends Factory
             'reply_settings' => fake()->randomElement([
                 ReplySettingEnum::EVERYONE,
                 ReplySettingEnum::MENTIONED_FOLLOWERS,
-                ReplySettingEnum::FOLLOWERS
+                ReplySettingEnum::FOLLOWERS,
             ]),
             'withheld' => ['copyright' => false],
         ];

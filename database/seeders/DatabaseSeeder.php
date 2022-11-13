@@ -34,5 +34,27 @@ class DatabaseSeeder extends Seeder
                         ->pluck('id')
                 )
             );
+
+        User::inRandomOrder()
+            ->limit(10)
+            ->each(
+                fn (User $user) => $user->mutedUsers()
+                    ->attach(User::select('id')
+                        ->where('id', '<>', $user->id)
+                        ->inRandomOrder()
+                        ->limit(fake()->numberBetween(1, 5))
+                        ->pluck('id'))
+            );
+
+        User::inRandomOrder()
+            ->limit(10)
+            ->each(
+                fn (User $user) => $user->blockedUsers()
+                    ->attach(User::select('id')
+                        ->where('id', '<>', $user->id)
+                        ->inRandomOrder()
+                        ->limit(fake()->numberBetween(1, 5))
+                        ->pluck('id'))
+            );
     }
 }

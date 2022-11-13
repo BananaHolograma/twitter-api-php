@@ -17,7 +17,7 @@ class TweetEventSubscriber
             $tweet = $event->tweet;
 
             if ($tweet->wasRecentlyCreated) {
-                if (!$tweet->metrics()->exists()) {
+                if (! $tweet->metrics()->exists()) {
                     $tweet->metrics()->save(new TweetMetrics());
                 }
 
