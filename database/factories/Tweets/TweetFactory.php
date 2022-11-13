@@ -3,6 +3,7 @@
 namespace Database\Factories\Tweets;
 
 use Domain\Shared\Models\User;
+use Domain\Tweets\Enums\ReplySettingEnum;
 use Domain\Tweets\Models\{Tweet, TweetMetrics};
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -33,7 +34,11 @@ class TweetFactory extends Factory
                     ->addMinutes(30)
                     ->toDateTimeString(),
             ],
-            'reply_settings' => fake()->randomElement(['everyone', 'mentioned_users', 'followers']),
+            'reply_settings' => fake()->randomElement([
+                ReplySettingEnum::EVERYONE,
+                ReplySettingEnum::MENTIONED_FOLLOWERS,
+                ReplySettingEnum::FOLLOWERS
+            ]),
             'withheld' => ['copyright' => false],
         ];
     }

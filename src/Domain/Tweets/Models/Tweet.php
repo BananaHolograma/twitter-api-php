@@ -6,6 +6,7 @@ use App\Events\TweetCreatedEvent;
 use Domain\Shared\Models\BaseEloquentModel;
 use Domain\Shared\Models\User;
 use Domain\Shared\Traits\HasSnowflakeAsPrimaryKey;
+use Domain\Tweets\Enums\ReplySettingEnum;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -30,7 +31,7 @@ class Tweet extends BaseEloquentModel
     protected $casts = [
         'edit_history_tweet_ids' => 'array',
         'edit_controls' => 'array',
-        'reply_settings' => 'array',
+        'reply_settings' => ReplySettingEnum::class,
         'possibly_sensitive' => 'boolean',
         'withheld' => 'array',
     ];
