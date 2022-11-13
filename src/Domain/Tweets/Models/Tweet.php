@@ -9,6 +9,7 @@ use Domain\Shared\Traits\HasSnowflakeAsPrimaryKey;
 use Domain\Tweets\Enums\ReplySettingEnum;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Tweet extends BaseEloquentModel
@@ -45,23 +46,23 @@ class Tweet extends BaseEloquentModel
         return $this->belongsTo(User::class, 'author_id', 'id');
     }
 
-    public function authorReplied(): BelongsTo
+    public function replies(): HasMany
     {
-        return $this->belongsTo(User::class, 'in_reply_to_author_id', 'id');
-    }
-
-    public function originalConversation(): BelongsTo
-    {
-        return $this->belongsTo(Tweet::class, 'conversation_id', 'id');
-    }
-
-    public function likes(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'user_tweet_likes')->withTimestamps();
+        return $this->hasMany(Tweet::class, 'in_reply_to_author_id', 'author_id');
     }
 
     public function metrics(): HasOne
     {
         return $this->hasOne(TweetMetrics::class);
+    }
+
+    public function authorReplied(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'in_reply_to_author_id', 'id');
+    }
+
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_tweet_likes')->withTimestamps();
     }
 }
