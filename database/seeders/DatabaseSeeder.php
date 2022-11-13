@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Tweet;
-use App\Models\User;
+use Domain\Shared\Models\User;
+use Domain\Tweets\Models\Tweet;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Tweets\Models;
 
 use App\Events\TweetCreatedEvent;
-use App\Traits\HasSnowflakeAsPrimaryKey;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Domain\Shared\Models\BaseEloquentModel;
+use Domain\Shared\Models\User;
+use Domain\Shared\Traits\HasSnowflakeAsPrimaryKey;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Tweet extends Model
+class Tweet extends BaseEloquentModel
 {
-    use HasSnowflakeAsPrimaryKey, HasFactory;
+    use HasSnowflakeAsPrimaryKey;
 
     protected $fillable = [
         'author_id', 'in_reply_to_author_id',

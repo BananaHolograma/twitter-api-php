@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Tweet;
+use Domain\Tweets\Models\Tweet;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;

@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Tweets\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Domain\Shared\Models\BaseEloquentModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TweetMetrics extends Model
+class TweetMetrics extends BaseEloquentModel
 {
-    use HasFactory;
-
     protected $fillable = [
         'impression_count', 'like_count', 'reply_count',
         'retweet_count', 'quote_count', 'url_link_clicks', 'user_profile_clicks',

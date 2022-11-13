@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\TweetCreatedEvent;
-use App\Models\TweetMetrics;
+use Domain\Tweets\Models\TweetMetrics;
 use Illuminate\Support\Facades\DB;
 
 class TweetEventSubscriber
@@ -17,8 +17,8 @@ class TweetEventSubscriber
             $tweet = $event->tweet;
 
             if ($tweet->wasRecentlyCreated) {
-                if (! $tweet->metrics()->exists()) {
-                    $tweet->metrics()->save(new TweetMetrics);
+                if (!$tweet->metrics()->exists()) {
+                    $tweet->metrics()->save(new TweetMetrics());
                 }
 
                 if (is_null($tweet->edit_controls)) {

@@ -1,17 +1,18 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Tweets;
 
-use App\Models\Tweet;
-use App\Models\TweetMetrics;
-use App\Models\User;
+use Domain\Shared\Models\User;
+use Domain\Tweets\Models\{Tweet, TweetMetrics};
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tweet>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Domain\Models\Tweets\Tweet>
  */
 class TweetFactory extends Factory
 {
+
+    protected $model = Tweet::class;
     /**
      * Define the model's default state.
      *

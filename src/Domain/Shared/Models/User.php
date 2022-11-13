@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Shared\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Traits\HasSnowflakeAsPrimaryKey;
+use Database\Factories\Shared\UserFactory;
+use Domain\Shared\Traits\HasSnowflakeAsPrimaryKey;
+use Domain\Tweets\Models\Tweet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasSnowflakeAsPrimaryKey, HasApiTokens, HasFactory, Notifiable;
+    use HasSnowflakeAsPrimaryKey, HasFactory, HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -54,5 +56,10 @@ class User extends Authenticatable
     public function likedTweets(): BelongsToMany
     {
         return $this->belongsToMany(Tweet::class, 'user_tweet_likes')->withTimestamps();
+    }
+
+    protected static function newFactory()
+    {
+        return UserFactory::new();
     }
 }
