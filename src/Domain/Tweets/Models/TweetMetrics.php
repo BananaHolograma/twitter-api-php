@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class TweetMetrics extends BaseEloquentModel
 {
     protected $fillable = [
-        'impression_count', 'like_count', 'reply_count',
+        'impression_count', 'like_count', 'reply_count', 'video_views_count',
         'retweet_count', 'quote_count', 'url_link_clicks', 'user_profile_clicks',
     ];
 
@@ -21,6 +21,7 @@ class TweetMetrics extends BaseEloquentModel
             'like_count' => $this->like_count,
             'retweet_count' => $this->retweet_count,
             'quote_count' => $this->quote_count,
+            'video_views_count' => $this->video_views_count
         ];
     }
 
@@ -52,6 +53,7 @@ class TweetMetrics extends BaseEloquentModel
             'reply_count' => $this->reply_count,
             'like_count' => $this->like_count,
             'retweet_count' => $this->retweet_count,
+            'video_views_count' => $this->video_views_count,
             'url_link_clicks' => $this->url_link_clicks,
             'user_profile_clicks' => $this->user_profile_clicks,
         ];

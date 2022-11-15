@@ -20,7 +20,7 @@ class Tweet extends BaseEloquentModel
         'author_id', 'in_reply_to_author_id',
         'conversation_id', 'text', 'lang',
         'possibly_sensitive', 'source',
-        'reply_settings',
+        'reply_settings', 'visible_for'
     ];
 
     protected $guarded = [
@@ -34,6 +34,7 @@ class Tweet extends BaseEloquentModel
         'edit_controls' => 'array',
         'reply_settings' => ReplySettingEnum::class,
         'possibly_sensitive' => 'boolean',
+        'visible_for' => 'array',
         'withheld' => 'array',
     ];
 

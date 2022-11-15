@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedInteger('reply_count')->default(0);
             $table->unsignedInteger('retweet_count')->default(0);
             $table->unsignedInteger('quote_count')->default(0);
+            $table->unsignedInteger('video_views_count')->default(0);
             $table->unsignedInteger('url_link_clicks')->default(0);
             $table->unsignedInteger('user_profile_clicks')->default(0);
 

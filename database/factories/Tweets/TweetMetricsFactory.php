@@ -25,6 +25,7 @@ class TweetMetricsFactory extends Factory
             'like_count' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
             'retweet_count' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
             'quote_count' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
+            'video_views_count' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
             'url_link_clicks' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
             'user_profile_clicks' => fake()->boolean() ? fake()->numberBetween(0, 10000) : 0,
         ];
@@ -39,6 +40,7 @@ class TweetMetricsFactory extends Factory
                 'like_count' => 0,
                 'retweet_count' => 0,
                 'quote_count' => 0,
+                'video_views_count' => 0,
                 'url_link_clicks' => 0,
                 'user_profile_clicks' => 0,
             ];

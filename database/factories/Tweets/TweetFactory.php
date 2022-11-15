@@ -28,6 +28,7 @@ class TweetFactory extends Factory
             'lang' => fake()->languageCode(),
             'possibly_sensitive' => false,
             'source' => fake()->randomElement(['Twitter Web App', 'API v2', 'Bot']),
+            'visible_for' => [],
             'edit_controls' => [
                 'edits_remaining' => 5,
                 'is_edit_eligible' => true,
@@ -42,6 +43,15 @@ class TweetFactory extends Factory
             ]),
             'withheld' => ['copyright' => false],
         ];
+    }
+
+    public function visibleFor(array $users = [])
+    {
+        return $this->state(function (array $attributes) use ($users) {
+            return [
+                'visible_for' => $users
+            ];
+        });
     }
 
     public function configure()

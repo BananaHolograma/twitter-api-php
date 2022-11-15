@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('author_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('in_reply_to_author_id')->nullable()->constrained('users');
             $table->string('text', 140)->index();
+            $table->json('visible_for')->nullable();
             $table->json('edit_history_tweet_ids')->nullable();
             $table->json('edit_controls')->nullable();
             $table->string('reply_settings')->default('everyone');
