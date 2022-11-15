@@ -6,7 +6,6 @@ use App\Events\Tweets\TweetCreatedEvent;
 use Domain\Shared\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
-
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
@@ -49,7 +48,7 @@ it('should create a new tweet succesfully', function () {
     postJson(route('api.create-tweet'), [
         'text' => 'This tweet is not a tweet',
         'lang' => 'en',
-        'visible_for' => []
+        'visible_for' => [],
     ])->assertOk();
 
     Event::assertDispatched(function (TweetCreatedEvent $event) use ($user) {
