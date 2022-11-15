@@ -20,6 +20,7 @@ class Tweet extends BaseEloquentModel
 
     protected $fillable = [
         'author_id', 'in_reply_to_author_id',
+        'in_reply_to_tweet_id',
         'conversation_id', 'text', 'lang',
         'possibly_sensitive', 'source',
         'reply_settings', 'visible_for',
@@ -42,7 +43,7 @@ class Tweet extends BaseEloquentModel
     ];
 
     protected $appends = [
-        'is_editable',
+        'is_editable', 'is_main_thread',
     ];
 
     protected $dispatchesEvents = [
@@ -80,5 +81,10 @@ class Tweet extends BaseEloquentModel
         return isset($this->edit_controls) &&
             $this->edit_controls['edits_remaining'] > 0 &&
             Carbon::parse($this->edit_controls['editable_until'])->diffInMinutes(now()) > 30;
+    }
+
+    public function getIsMainThreadAttribute(): bool
+    {
+        return $this->id === $this->conversation_id || $this->author_id === $this->reply_to_author_id;
     }
 }

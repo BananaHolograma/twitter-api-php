@@ -31,8 +31,8 @@ class TweetEventSubscriber
                             ->toDateTimeString(),
                     ];
                 }
-                if (is_null($tweet->conversation_id) && is_null($tweet->reply_to_tweet_id)) {
-                    $tweet->conversation_id = $tweet->id;
+                if (is_null($tweet->conversation_id)) {
+                    $tweet->conversation_id = $tweet->reply_to_tweet_id ?? $tweet->id;
                 }
 
                 $tweet->save();
