@@ -11,6 +11,10 @@
 |
 */
 
+use Domain\Shared\Models\User;
+
+use function Pest\Laravel\actingAs;
+
 uses(Tests\TestCase::class)->in('Feature');
 
 /*
@@ -38,3 +42,16 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+
+/**
+ * @param User $user - The user you wants to simulate as authenticated
+ * When it's empty it creates a new user for you.
+ */
+function actingAsApiUser(?User $user = null)
+{
+    /** @var \Illuminate\Contracts\Auth\Authenticatable $user */
+    $user = $user ?? User::factory()->create();
+
+    return test()->actingAs($user, 'api');
+}

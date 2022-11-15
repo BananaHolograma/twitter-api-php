@@ -11,8 +11,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class)->group('api');
 
 it('should throw validation errors when data is wrong on tweet creation', function () {
-    actingAs(User::factory()->create(), 'api');
 
+    actingAsApiUser();
     assertDatabaseCount('tweets', 0);
 
     postJson(route('api.create-tweet'), [
