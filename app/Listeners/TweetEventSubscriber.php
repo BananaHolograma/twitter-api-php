@@ -2,7 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Events\TweetCreatedEvent;
+use App\Events\Tweets\TweetCreatedEvent;
+use App\Events\Tweets\TweetUpdatingEvent;
 use Domain\Tweets\Models\TweetMetrics;
 use Illuminate\Support\Facades\DB;
 
@@ -30,9 +31,28 @@ class TweetEventSubscriber
                             ->toDateTimeString(),
                     ];
                 }
+                if (is_null($tweet->conversation_id) && is_null($tweet->reply_to_tweet_id)) {
+                    $tweet->conversation_id = $tweet->id;
+                }
+
                 $tweet->save();
             }
         });
+    }
+
+    public function handleTweetEditing(TweetUpdatingEvent $event)
+    {
+        $tweet = $event->tweet;
+
+        if (! $tweet->wasRecentlyCreated) {
+            $edits_remaining = (int) $tweet->edit_controls['edits_remaining'] - 1;
+
+            $tweet->edit_controls = [
+                ...$tweet->edit_controls,
+                'edits_remaining' => $edits_remaining,
+                'is_edit_eligible' => $edits_remaining > 0,
+            ];
+        }
     }
 
     /**
@@ -46,6 +66,11 @@ class TweetEventSubscriber
         $events->listen(
             TweetCreatedEvent::class,
             [self::class, 'handleTweetCreation']
+        );
+
+        $events->listen(
+            TweetUpdatingEvent::class,
+            [self::class, 'handleTweetEditing']
         );
     }
 }

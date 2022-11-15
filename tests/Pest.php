@@ -13,8 +13,6 @@
 
 use Domain\Shared\Models\User;
 
-use function Pest\Laravel\actingAs;
-
 uses(Tests\TestCase::class)->in('Feature');
 
 /*
@@ -43,9 +41,8 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-
 /**
- * @param User $user - The user you wants to simulate as authenticated
+ * @param  User  $user - The user you wants to simulate as authenticated
  * When it's empty it creates a new user for you.
  */
 function actingAsApiUser(?User $user = null)

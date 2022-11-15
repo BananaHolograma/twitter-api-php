@@ -30,7 +30,8 @@ return new class extends Migration
         });
 
         Schema::table('tweets', function (Blueprint $table) {
-            $table->foreignId('conversation_id')->after('in_reply_to_author_id')->nullable()->constrained('tweets');
+            $table->foreignId('conversation_id')->after('id')->nullable()->constrained('tweets');
+            $table->foreignId('in_reply_to_tweet_id')->after('in_reply_to_author_id')->nullable()->constrained('tweets');
         });
     }
 

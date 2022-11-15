@@ -2,7 +2,9 @@
 
 namespace Domain\Tweets\Models;
 
-use App\Events\TweetCreatedEvent;
+use App\Events\Tweets\TweetCreatedEvent;
+use App\Events\Tweets\TweetUpdatingEvent;
+use Carbon\Carbon;
 use Domain\Shared\Models\BaseEloquentModel;
 use Domain\Shared\Models\User;
 use Domain\Shared\Traits\HasSnowflakeAsPrimaryKey;
@@ -24,6 +26,7 @@ class Tweet extends BaseEloquentModel
     ];
 
     protected $guarded = [
+        'id',
         'edit_history_tweet_ids',
         'edit_controls',
         'withheld',
@@ -38,8 +41,13 @@ class Tweet extends BaseEloquentModel
         'withheld' => 'array',
     ];
 
+    protected $appends = [
+        'is_editable',
+    ];
+
     protected $dispatchesEvents = [
         'created' => TweetCreatedEvent::class,
+        'updating' => TweetUpdatingEvent::class,
     ];
 
     public function author(): BelongsTo
@@ -65,5 +73,12 @@ class Tweet extends BaseEloquentModel
     public function likes(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_tweet_likes')->withTimestamps();
+    }
+
+    public function getIsEditableAttribute(): bool
+    {
+        return isset($this->edit_controls) &&
+            $this->edit_controls['edits_remaining'] > 0 &&
+            Carbon::parse($this->edit_controls['editable_until'])->diffInMinutes(now()) > 30;
     }
 }

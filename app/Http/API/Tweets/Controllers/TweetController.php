@@ -3,15 +3,19 @@
 namespace App\Http\API\Tweets\Controllers;
 
 use App\Http\Controllers\Controller;
+use Domain\Tweets\Actions\ProcessTweetAction;
 use Domain\Tweets\DataTransferObjects\UpsertTweetData;
-use Domain\Tweets\Models\Tweet;
 
 class TweetController extends Controller
 {
+    public function __construct(private readonly ProcessTweetAction $processTweetAction)
+    {
+    }
+
     public function create(UpsertTweetData $request)
     {
-        Tweet::create($request->all());
+        $tweet = $this->processTweetAction->execute(auth()->user(), $request);
 
-        return '';
+        return response()->json($tweet);
     }
 }
