@@ -49,7 +49,7 @@ class TweetFactory extends Factory
     {
         return $this->state(function (array $attributes) use ($users) {
             return [
-                'visible_for' => $users
+                'visible_for' => $users,
             ];
         });
     }

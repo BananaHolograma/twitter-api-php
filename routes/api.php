@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\API\Controllers\TweetController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->group(function () {
-
     Route::prefix('tweets')
         ->controller(TweetController::class)
         ->group(function () {

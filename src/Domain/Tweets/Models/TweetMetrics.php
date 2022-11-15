@@ -21,7 +21,7 @@ class TweetMetrics extends BaseEloquentModel
             'like_count' => $this->like_count,
             'retweet_count' => $this->retweet_count,
             'quote_count' => $this->quote_count,
-            'video_views_count' => $this->video_views_count
+            'video_views_count' => $this->video_views_count,
         ];
     }
 

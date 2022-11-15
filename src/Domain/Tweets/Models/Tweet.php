@@ -20,7 +20,7 @@ class Tweet extends BaseEloquentModel
         'author_id', 'in_reply_to_author_id',
         'conversation_id', 'text', 'lang',
         'possibly_sensitive', 'source',
-        'reply_settings', 'visible_for'
+        'reply_settings', 'visible_for',
     ];
 
     protected $guarded = [
