@@ -17,7 +17,7 @@ class UpsertTweetData extends Data
     ) {
     }
 
-    public function rules(): array
+    public static function rules(): array
     {
         return [
             'id' => ['nullable', 'exists:users,id'],

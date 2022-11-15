@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\API\Controllers\TweetController;
+use App\Http\API\Tweets\Controllers\TweetController;
 use Illuminate\Support\Facades\Route;
 
 /*

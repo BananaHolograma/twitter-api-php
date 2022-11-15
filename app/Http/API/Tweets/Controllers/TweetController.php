@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\API\Controllers;
+namespace App\Http\API\Tweets\Controllers;
 
 use App\Http\Controllers\Controller;
 use Domain\Tweets\DataTransferObjects\UpsertTweetData;
