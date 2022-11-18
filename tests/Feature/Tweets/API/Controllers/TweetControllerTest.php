@@ -17,7 +17,7 @@ it('should throw validation errors when data is wrong on tweet creation', functi
     actingAsApiUser();
     assertDatabaseCount('tweets', 0);
 
-    postJson(route('api.create-tweet'), [
+    postJson(route('api.process-tweet'), [
         'text' => fake()->realText(150),
         'reply_settings' => 'TO THE WORLD',
         'visible_for' => ['superman id', 'spiderman id'],
@@ -45,7 +45,7 @@ it('should create a new tweet succesfully', function () {
 
     assertDatabaseMissing('tweets', ['author_id' => $user->id]);
 
-    postJson(route('api.create-tweet'), [
+    postJson(route('api.process-tweet'), [
         'text' => 'This tweet is not a tweet',
         'lang' => 'en',
         'visible_for' => [],

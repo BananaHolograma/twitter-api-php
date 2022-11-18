@@ -19,14 +19,15 @@ return new class extends Migration
             $table->foreignId('in_reply_to_author_id')->nullable()->constrained('users');
             $table->string('text', 140)->index();
             $table->json('visible_for')->nullable();
-            $table->json('edit_history_tweet_ids')->nullable();
             $table->json('edit_controls')->nullable();
+            $table->json('edit_history_tweet_ids')->nullable();
             $table->string('reply_settings')->default('everyone');
             $table->string('lang', 8)->index();
             $table->boolean('possibly_sensitive')->default(false);
             $table->string('source')->default('Twitter Web App');
             $table->json('withheld')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('tweets', function (Blueprint $table) {

@@ -12,7 +12,7 @@ class TweetController extends Controller
     {
     }
 
-    public function create(UpsertTweetData $request)
+    public function processTweet(UpsertTweetData $request)
     {
         $tweet = $this->processTweetAction->execute(auth()->user(), $request);
 

@@ -3,7 +3,6 @@
 namespace App\Listeners;
 
 use App\Events\Tweets\TweetCreatedEvent;
-use App\Events\Tweets\TweetUpdatingEvent;
 use Domain\Tweets\Models\TweetMetrics;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +17,7 @@ class TweetEventSubscriber
             $tweet = $event->tweet;
 
             if ($tweet->wasRecentlyCreated) {
-                if (!$tweet->metrics()->exists()) {
+                if (! $tweet->metrics()->exists()) {
                     $tweet->metrics()->save(new TweetMetrics());
                 }
 
@@ -40,21 +39,6 @@ class TweetEventSubscriber
         });
     }
 
-    public function handleTweetEditing(TweetUpdatingEvent $event)
-    {
-        $tweet = $event->tweet;
-
-        if (!$tweet->wasRecentlyCreated) {
-            $edits_remaining = (int) $tweet->edit_controls['edits_remaining'] - 1;
-
-            $tweet->edit_controls = [
-                ...$tweet->edit_controls,
-                'edits_remaining' => $edits_remaining,
-                'is_edit_eligible' => $edits_remaining > 0,
-            ];
-        }
-    }
-
     /**
      * Register the listeners for the subscriber.
      *
@@ -66,11 +50,6 @@ class TweetEventSubscriber
         $events->listen(
             TweetCreatedEvent::class,
             [self::class, 'handleTweetCreation']
-        );
-
-        $events->listen(
-            TweetUpdatingEvent::class,
-            [self::class, 'handleTweetEditing']
         );
     }
 }

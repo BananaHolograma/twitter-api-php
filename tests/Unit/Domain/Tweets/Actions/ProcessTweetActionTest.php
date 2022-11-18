@@ -9,9 +9,9 @@ use Domain\Tweets\Exceptions\TweetCannotBeEditAnymore;
 use Domain\Tweets\Exceptions\TweetDoesNotBelongsToAuthor;
 use Domain\Tweets\Models\Tweet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
+use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 
 uses(RefreshDatabase::class)->group('domain/tweets');
@@ -21,9 +21,9 @@ it('should create the tweet for the corresponding author when it does not exists
 
     $author = User::factory()->create();
     $data = UpsertTweetData::from([
-        'text' => "Text for the world",
+        'text' => 'Text for the world',
         'possibly_sensitive' => true,
-        'reply_settings' => ReplySettingEnum::FOLLOWERS
+        'reply_settings' => ReplySettingEnum::FOLLOWERS,
     ]);
 
     $tweet_created = app(ProcessTweetAction::class)->execute($author, $data);
@@ -37,20 +37,21 @@ it('should create the tweet for the corresponding author when it does not exists
         [
             'text' => $tweet_created->text,
             'possibly_sensitive' => $tweet_created->possibly_sensitive,
-            'reply_settings' => ReplySettingEnum::FOLLOWERS->value
+            'reply_settings' => ReplySettingEnum::FOLLOWERS->value,
         ]
     );
+    expect($tweet_created->edit_history_tweet_ids)->toBeEmpty();
 });
 
-it("should throws exception when in the update the tweet does not belong to the author", function () {
+it('should throws exception when in the update the tweet does not belong to the author', function () {
     $author = User::factory()->create();
     $tweet = Tweet::factory()->create();
 
     $data = UpsertTweetData::from([
         'id' => $tweet->id,
-        'text' => "Text for the world",
+        'text' => 'Text for the world',
         'possibly_sensitive' => true,
-        'reply_settings' => ReplySettingEnum::FOLLOWERS
+        'reply_settings' => ReplySettingEnum::FOLLOWERS,
     ]);
 
     expect(
@@ -61,18 +62,17 @@ it("should throws exception when in the update the tweet does not belong to the 
 it('should update a tweet if this exists and is still editable', function () {
     $tweet = Tweet::factory()->create();
 
-    assertDatabaseCount('tweets', 1);
-
     $data = UpsertTweetData::from([
         'id' => $tweet->id,
-        'text' => "Editing my content proudly",
+        'text' => 'Editing my content proudly',
     ]);
 
     $tweet_updated = app(ProcessTweetAction::class)->execute($tweet->author, $data);
 
-    assertDatabaseCount('tweets', 1);
-    assertEquals($tweet_updated->id, $data->id);
+    assertTrue($data->id !== $tweet_updated->id);
     assertEquals($tweet_updated->text, $data->text);
+    dump($tweet_updated->edit_history_tweet_ids);
+    expect($tweet_updated->edit_history_tweet_ids)->toBeArray()->toContain((int)$tweet->id);
 });
 
 it('should throw exception when tweet is not edit eligible anymore and tries to be updated', function () {
@@ -81,7 +81,7 @@ it('should throw exception when tweet is not edit eligible anymore and tries to 
     $tweet = Tweet::factory()->notEditableByTries()->create();
     $data = UpsertTweetData::from([
         'id' => $tweet->id,
-        'text' => "Editing my content proudly",
+        'text' => 'Editing my content proudly',
     ]);
 
     expect(

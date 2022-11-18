@@ -3,24 +3,25 @@
 namespace Domain\Tweets\Models;
 
 use App\Events\Tweets\TweetCreatedEvent;
-use App\Events\Tweets\TweetUpdatingEvent;
 use Carbon\Carbon;
 use Domain\Shared\Models\BaseEloquentModel;
 use Domain\Shared\Models\User;
 use Domain\Shared\Traits\HasSnowflakeAsPrimaryKey;
 use Domain\Tweets\Enums\ReplySettingEnum;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tweet extends BaseEloquentModel
 {
-    use HasSnowflakeAsPrimaryKey;
+    use HasSnowflakeAsPrimaryKey, SoftDeletes;
 
     protected $fillable = [
         'author_id', 'in_reply_to_author_id',
-        'in_reply_to_tweet_id',
+        'in_reply_to_tweet_id', 'edit_history_tweet_ids',
         'conversation_id', 'text', 'lang',
         'possibly_sensitive', 'source',
         'reply_settings', 'visible_for',
@@ -28,14 +29,12 @@ class Tweet extends BaseEloquentModel
 
     protected $guarded = [
         'id',
-        'edit_history_tweet_ids',
-        'edit_controls',
         'withheld',
     ];
 
     protected $casts = [
-        'edit_history_tweet_ids' => 'array',
         'edit_controls' => 'array',
+        'edit_history_tweet_ids' => 'array',
         'reply_settings' => ReplySettingEnum::class,
         'possibly_sensitive' => 'boolean',
         'visible_for' => 'array',
@@ -48,7 +47,6 @@ class Tweet extends BaseEloquentModel
 
     protected $dispatchesEvents = [
         'created' => TweetCreatedEvent::class,
-        'updating' => TweetUpdatingEvent::class,
     ];
 
     public function author(): BelongsTo
@@ -81,5 +79,18 @@ class Tweet extends BaseEloquentModel
         return isset($this->edit_controls) &&
             $this->edit_controls['edits_remaining'] > 0 &&
             Carbon::parse($this->edit_controls['editable_until'])->greaterThan(now());
+    }
+
+
+    public function getEditHistoryAttribute(): Collection
+    {
+        if (isset($this->edit_history_tweet_ids) && count($this->edit_history_tweet_ids)) {
+            return self::onlyTrashed()
+                ->whereIn('id', $this->edit_history_tweet_ids)
+                ->orderBy('deleted_at')
+                ->get();
+        }
+
+        return Collection::empty();
     }
 }

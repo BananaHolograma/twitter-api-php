@@ -7,15 +7,39 @@ use Domain\Tweets\DataTransferObjects\UpsertTweetData;
 use Domain\Tweets\Exceptions\TweetCannotBeEditAnymore;
 use Domain\Tweets\Exceptions\TweetDoesNotBelongsToAuthor;
 use Domain\Tweets\Models\Tweet;
+use Illuminate\Support\Facades\DB;
 
 class UpdateTweetAction
 {
+    public function __construct(private readonly CreateTweetAction $createTweetAction)
+    {
+    }
+
     public function execute(User $author, UpsertTweetData $data): Tweet
     {
-        $tweet = $this->ensureCanBeEdited($author, $data);
-        $tweet->update($data->toArray());
+        return DB::transaction(function () use ($author, $data) {
+            $tweet = $this->ensureCanBeEdited($author, $data);
+            $edits_remaining = (int) $tweet->edit_controls['edits_remaining'] - 1;
 
-        return $tweet->fresh();
+            $new_tweet = $tweet->replicate()
+                ->fill([
+                    ...$data->toArray(),
+                    'edit_history_tweet_ids' => [
+                        ...$tweet->edit_history_tweet_ids ?? [],
+                        $tweet->id
+                    ],
+                    'edit_controls' => [
+                        ...$tweet->edit_controls,
+                        'edits_remaining' => $edits_remaining,
+                        'is_edit_eligible' => $edits_remaining > 0,
+                    ],
+                ]);
+
+            $new_tweet->save();
+            $tweet->delete();
+
+            return $new_tweet->fresh('author');
+        });
     }
 
     private function ensureCanBeEdited(User $author, UpsertTweetData $data): Tweet
