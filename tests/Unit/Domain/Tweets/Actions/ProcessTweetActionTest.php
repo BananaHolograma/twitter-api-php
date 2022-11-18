@@ -6,6 +6,7 @@ use Domain\Tweets\Actions\ProcessTweetAction;
 use Domain\Tweets\DataTransferObjects\UpsertTweetData;
 use Domain\Tweets\Enums\ReplySettingEnum;
 use Domain\Tweets\Exceptions\TweetCannotBeEditAnymore;
+use Domain\Tweets\Exceptions\TweetDoesNotBelongsToAuthor;
 use Domain\Tweets\Models\Tweet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -39,6 +40,22 @@ it('should create the tweet for the corresponding author when it does not exists
             'reply_settings' => ReplySettingEnum::FOLLOWERS->value
         ]
     );
+});
+
+it("should throws exception when in the update the tweet does not belong to the author", function () {
+    $author = User::factory()->create();
+    $tweet = Tweet::factory()->create();
+
+    $data = UpsertTweetData::from([
+        'id' => $tweet->id,
+        'text' => "Text for the world",
+        'possibly_sensitive' => true,
+        'reply_settings' => ReplySettingEnum::FOLLOWERS
+    ]);
+
+    expect(
+        fn () => app(ProcessTweetAction::class)->execute($author, $data)
+    )->toThrow(TweetDoesNotBelongsToAuthor::class, "The tweet {$tweet->id} does not belongs to user {$author->id}, it cannot be edited");
 });
 
 it('should update a tweet if this exists and is still editable', function () {
