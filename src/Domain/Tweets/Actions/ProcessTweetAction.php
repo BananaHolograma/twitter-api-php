@@ -23,6 +23,6 @@ class ProcessTweetAction
             $this->updateTweetAction->execute($author, $data) :
             $this->createTweetAction->execute($author, $data);
 
-        return $tweet;
+        return $tweet->fresh('author');
     }
 }
