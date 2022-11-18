@@ -14,8 +14,8 @@ class UpsertTweetData extends Data
         public ?int $reply_to_tweet_id,
         public string $text,
         public ?string $lang = 'en',
-        public ReplySettingEnum $reply_settings = ReplySettingEnum::EVERYONE,
-        public bool $possibly_sensitive = false,
+        public ?ReplySettingEnum $reply_settings = ReplySettingEnum::EVERYONE,
+        public ?bool $possibly_sensitive = false,
         public ?array $visible_for = []
     ) {
     }

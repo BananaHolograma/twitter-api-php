@@ -18,7 +18,7 @@ class TweetEventSubscriber
             $tweet = $event->tweet;
 
             if ($tweet->wasRecentlyCreated) {
-                if (! $tweet->metrics()->exists()) {
+                if (!$tweet->metrics()->exists()) {
                     $tweet->metrics()->save(new TweetMetrics());
                 }
 
@@ -44,7 +44,7 @@ class TweetEventSubscriber
     {
         $tweet = $event->tweet;
 
-        if (! $tweet->wasRecentlyCreated) {
+        if (!$tweet->wasRecentlyCreated) {
             $edits_remaining = (int) $tweet->edit_controls['edits_remaining'] - 1;
 
             $tweet->edit_controls = [

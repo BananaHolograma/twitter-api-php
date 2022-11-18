@@ -54,6 +54,32 @@ class TweetFactory extends Factory
         });
     }
 
+    public function notEditableByTries()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'edit_controls' => [
+                    'edits_remaining' => 0,
+                    'is_edit_eligible' => false,
+                    'editable_until' => now()->addMinutes(30)->toDateTimeString(),
+                ],
+            ];
+        });
+    }
+
+    public function notEditableByTimeWindow()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'edit_controls' => [
+                    'edits_remaining' => fake()->numberBetween(1, 5),
+                    'is_edit_eligible' => false,
+                    'editable_until' => now()->subMinutes(5)->toDateTimeString(),
+                ],
+            ];
+        });
+    }
+
     public function configure()
     {
         return $this->afterCreating(function (Tweet $tweet) {

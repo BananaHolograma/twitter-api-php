@@ -43,7 +43,7 @@ class Tweet extends BaseEloquentModel
     ];
 
     protected $appends = [
-        'is_editable', 'is_main_thread',
+        'is_editable',
     ];
 
     protected $dispatchesEvents = [
@@ -58,7 +58,7 @@ class Tweet extends BaseEloquentModel
 
     public function replies(): HasMany
     {
-        return $this->hasMany(Tweet::class, 'in_reply_to_author_id', 'author_id');
+        return $this->hasMany(Tweet::class, 'in_reply_to_tweet_id', 'id')->whereNotNull('conversation_id');
     }
 
     public function metrics(): HasOne
@@ -80,11 +80,6 @@ class Tweet extends BaseEloquentModel
     {
         return isset($this->edit_controls) &&
             $this->edit_controls['edits_remaining'] > 0 &&
-            Carbon::parse($this->edit_controls['editable_until'])->diffInMinutes(now()) > 30;
-    }
-
-    public function getIsMainThreadAttribute(): bool
-    {
-        return $this->id === $this->conversation_id || $this->author_id === $this->reply_to_author_id;
+            Carbon::parse($this->edit_controls['editable_until'])->greaterThan(now());
     }
 }

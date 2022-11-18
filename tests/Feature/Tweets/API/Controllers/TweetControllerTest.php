@@ -51,9 +51,7 @@ it('should create a new tweet succesfully', function () {
         'visible_for' => [],
     ])->assertOk();
 
-    Event::assertDispatched(function (TweetCreatedEvent $event) use ($user) {
-        return $event->tweet->author_id === $user->id;
-    });
+    Event::assertDispatched(fn (TweetCreatedEvent $event) => $event->tweet->author_id === $user->id);
 
     assertDatabaseHas('tweets', ['author_id' => $user->id]);
 });

@@ -13,6 +13,7 @@
 
 -   When a tweet is being created add default values for metrics and edit remainings
 -   reply settings must be a enum
+-   Look for a better way to update the edit controls when a tweet is still edit eligible
 
 # DEVELOPER PORTAL
 
