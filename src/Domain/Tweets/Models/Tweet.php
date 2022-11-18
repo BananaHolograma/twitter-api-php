@@ -81,7 +81,6 @@ class Tweet extends BaseEloquentModel
             Carbon::parse($this->edit_controls['editable_until'])->greaterThan(now());
     }
 
-
     public function getEditHistoryAttribute(): Collection
     {
         if (isset($this->edit_history_tweet_ids) && count($this->edit_history_tweet_ids)) {

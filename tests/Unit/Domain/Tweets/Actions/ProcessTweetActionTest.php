@@ -11,7 +11,6 @@ use Domain\Tweets\Models\Tweet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
-use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 
 uses(RefreshDatabase::class)->group('domain/tweets');
@@ -72,7 +71,7 @@ it('should update a tweet if this exists and is still editable', function () {
     assertTrue($data->id !== $tweet_updated->id);
     assertEquals($tweet_updated->text, $data->text);
     dump($tweet_updated->edit_history_tweet_ids);
-    expect($tweet_updated->edit_history_tweet_ids)->toBeArray()->toContain((int)$tweet->id);
+    expect($tweet_updated->edit_history_tweet_ids)->toBeArray()->toContain((int) $tweet->id);
 });
 
 it('should throw exception when tweet is not edit eligible anymore and tries to be updated', function () {
