@@ -2,7 +2,7 @@
 
 namespace Domain\Shared\DataTransferObjects;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Domain\Shared\Models\User;
 use Spatie\LaravelData\Data;
 
@@ -13,7 +13,7 @@ class UserData extends Data
         public string $name,
         public string $username,
         public bool $protected,
-        public Carbon|null $verified_at
+        public CarbonImmutable|null $verified_at
     ) {
     }
 

@@ -45,9 +45,8 @@ class User extends Authenticatable
         'id' => 'integer',
         'protected' => 'boolean',
         'email_verified_at' => 'datetime',
+        'verified_at' => 'immutable_date'
     ];
-
-    protected $dates = ['verified_at'];
 
     public function tweets(): HasMany
     {

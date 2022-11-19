@@ -17,7 +17,7 @@ class TweetData extends Data
         public string $text,
         public bool $possibly_sensitive,
         public ReplySettingEnum $reply_settings,
-        public UserData|Lazy $author,
+        public UserData $author,
         public TweetMetricsData $metrics,
         /** @var TweetData[] */
         #[DataCollectionOf(TweetData::class)]
@@ -37,11 +37,17 @@ class TweetData extends Data
             $tweet->text,
             $tweet->possibly_sensitive,
             $tweet->reply_settings,
-            Lazy::create(fn () => UserData::fromModel($tweet->author))->defaultIncluded(),
+            UserData::fromModel($tweet->author),
             TweetMetricsData::onlyPublicMetricsFrom($tweet->metrics),
-            Lazy::create(fn () => TweetData::collection($tweet->replies))->defaultIncluded(),
-            Lazy::create(fn () => UserData::fromModel($tweet->authorReplied)),
-            Lazy::create(fn () => TweetData::fromModel($tweet->tweetReplied)),
+            Lazy::create(fn () => TweetData::collection($tweet->replies)),
+            Lazy::when(
+                fn () => isset($tweet->reply_to_author_id),
+                fn () => UserData::fromModel($tweet->authorReplied)
+            ),
+            Lazy::when(
+                fn () => isset($tweet->reply_to_tweet_id),
+                fn () => TweetData::fromModel($tweet->tweetReplied)
+            ),
             Lazy::create(fn () => UserData::collection($tweet->visible_for)),
 
         );
