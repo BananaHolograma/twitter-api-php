@@ -5,6 +5,7 @@ namespace Domain\Shared\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Database\Factories\Shared\UserFactory;
+use Domain\Shared\Models\QueryBuilders\UserQueryBuilder;
 use Domain\Shared\Traits\HasSnowflakeAsPrimaryKey;
 use Domain\Tweets\Models\Tweet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,7 +45,7 @@ class User extends Authenticatable
     protected $casts = [
         'id' => 'integer',
         'protected' => 'boolean',
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'immutable_date',
         'verified_at' => 'immutable_date'
     ];
 
@@ -56,6 +57,20 @@ class User extends Authenticatable
     public function likedTweets(): BelongsToMany
     {
         return $this->belongsToMany(Tweet::class, 'user_tweet_likes')->withTimestamps();
+    }
+
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id', 'id')
+            ->withPivot('accepted')
+            ->withTimestamps();
+    }
+
+    public function following(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followers', 'following_id', 'follower_id', 'id')
+            ->withPivot('accepted')
+            ->withTimestamps();
     }
 
     public function mutedUsers(): BelongsToMany
@@ -71,5 +86,10 @@ class User extends Authenticatable
     protected static function newFactory()
     {
         return UserFactory::new();
+    }
+
+    public function newEloquentBuilder($query): UserQueryBuilder
+    {
+        return new UserQueryBuilder($query);
     }
 }
