@@ -6,7 +6,6 @@ use Domain\Shared\DataTransferObjects\UserData;
 use Domain\Tweets\Enums\ReplySettingEnum;
 use Domain\Tweets\Models\Tweet;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Lazy;
@@ -18,6 +17,7 @@ class TweetData extends Data
         public string $text,
         public bool $possibly_sensitive,
         public ReplySettingEnum $reply_settings,
+        public UserData|Lazy $author,
         public TweetMetricsData $metrics,
         /** @var TweetData[] */
         #[DataCollectionOf(TweetData::class)]
@@ -37,6 +37,7 @@ class TweetData extends Data
             $tweet->text,
             $tweet->possibly_sensitive,
             $tweet->reply_settings,
+            Lazy::create(fn () => UserData::fromModel($tweet->author))->defaultIncluded(),
             TweetMetricsData::onlyPublicMetricsFrom($tweet->metrics),
             Lazy::create(fn () => TweetData::collection($tweet->replies))->defaultIncluded(),
             Lazy::create(fn () => UserData::fromModel($tweet->authorReplied)),

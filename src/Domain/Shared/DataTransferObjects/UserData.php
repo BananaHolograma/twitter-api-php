@@ -13,7 +13,7 @@ class UserData extends Data
         public string $name,
         public string $username,
         public bool $protected,
-        public CarbonImmutable $verified_at
+        public CarbonImmutable|null $verified_at
     ) {
     }
 
