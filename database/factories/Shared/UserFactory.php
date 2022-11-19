@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Shared;
 
+use Carbon\Carbon;
 use Domain\Shared\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -53,10 +54,10 @@ class UserFactory extends Factory
         ]);
     }
 
-    public function verified_account()
+    public function verified_account(?Carbon $date = null)
     {
         return $this->state(fn (array $attributes) => [
-            'verified_at' => fake()->dateTimeBetween('-2 months', 'now'),
+            'verified_at' => $date ?? fake()->dateTimeBetween('-2 months', 'now'),
         ]);
     }
 
