@@ -70,6 +70,11 @@ class Tweet extends BaseEloquentModel
         return $this->belongsTo(User::class, 'in_reply_to_author_id', 'id');
     }
 
+    public function tweetReplied(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'in_reply_to_tweet_id', 'id');
+    }
+
     public function likes(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_tweet_likes')->withTimestamps();
