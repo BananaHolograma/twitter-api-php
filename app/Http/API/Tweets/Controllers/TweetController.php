@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Domain\Tweets\Actions\CreateTweetAction;
 use Domain\Tweets\Actions\ProcessTweetAction;
 use Domain\Tweets\Actions\UpdateTweetAction;
+use Domain\Tweets\DataTransferObjects\TweetData;
 use Domain\Tweets\DataTransferObjects\UpsertTweetData;
-use Domain\Tweets\Models\Tweet;
 
 class TweetController extends Controller
 {
@@ -22,20 +22,20 @@ class TweetController extends Controller
     {
         $tweet = $this->processTweetAction->execute(auth('api')->user(), $request);
 
-        return response()->json($tweet);
+        return TweetData::fromModel($tweet)->toJson();
     }
 
     public function create(UpsertTweetData $request)
     {
         $tweet = $this->createTweetAction->execute(auth('api')->user(), $request);
 
-        return response()->json($tweet);
+        return TweetData::fromModel($tweet)->toJson();
     }
 
     public function update(UpsertTweetData $request)
     {
         $tweet = $this->updateTweetAction->execute(auth('api')->user(), $request);
 
-        return response()->json($tweet);
+        return TweetData::fromModel($tweet)->toJson();
     }
 }
