@@ -33,6 +33,7 @@ class Tweet extends BaseEloquentModel
     ];
 
     protected $casts = [
+        'id' => 'integer',
         'edit_controls' => 'array',
         'edit_history_tweet_ids' => 'array',
         'reply_settings' => ReplySettingEnum::class,

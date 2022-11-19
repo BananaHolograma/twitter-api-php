@@ -52,7 +52,6 @@ it('should throws exception when in the update the tweet does not belong to the 
         'possibly_sensitive' => true,
         'reply_settings' => ReplySettingEnum::FOLLOWERS,
     ]);
-
     expect(
         fn () => app(ProcessTweetAction::class)->execute($author, $data)
     )->toThrow(TweetDoesNotBelongsToAuthor::class, "The tweet {$tweet->id} does not belongs to user {$author->id}, it cannot be edited");
@@ -70,7 +69,6 @@ it('should update a tweet if this exists and is still editable', function () {
 
     assertTrue($data->id !== $tweet_updated->id);
     assertEquals($tweet_updated->text, $data->text);
-    dump($tweet_updated->edit_history_tweet_ids);
     expect($tweet_updated->edit_history_tweet_ids)->toBeArray()->toContain((int) $tweet->id);
 });
 

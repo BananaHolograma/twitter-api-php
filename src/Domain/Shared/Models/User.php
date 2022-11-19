@@ -34,7 +34,7 @@ class User extends Authenticatable
         'password',
     ];
 
-    protected $guarded = ['verified_at'];
+    protected $guarded = ['id', 'verified_at'];
 
     protected $hidden = [
         'password',
@@ -42,6 +42,7 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
+        'id' => 'integer',
         'protected' => 'boolean',
         'email_verified_at' => 'datetime',
     ];

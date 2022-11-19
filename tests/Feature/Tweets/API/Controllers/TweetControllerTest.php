@@ -4,6 +4,7 @@ namespace Tests\Feature\Tweets\API\Controllers;
 
 use App\Events\Tweets\TweetCreatedEvent;
 use Domain\Shared\Models\User;
+use Domain\Tweets\Models\Tweet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\assertDatabaseCount;
@@ -54,4 +55,23 @@ it('should create a new tweet succesfully', function () {
     Event::assertDispatched(fn (TweetCreatedEvent $event) => $event->tweet->author_id === $user->id);
 
     assertDatabaseHas('tweets', ['author_id' => $user->id]);
+});
+
+it('should update a tweet succesfully if exists', function () {
+    $user = User::factory()->create();
+
+    actingAsApiUser($user);
+
+    $tweet = Tweet::factory()->create(['author_id' => $user->id]);
+
+    assertDatabaseCount('tweets', 1);
+
+    postJson(route('api.process-tweet'), [
+        'id' => $tweet->id,
+        'text' => 'This tweet is not a tweet',
+        'lang' => 'en',
+        'visible_for' => [],
+    ])->assertOk();
+
+    assertDatabaseCount('tweets', 2);
 });

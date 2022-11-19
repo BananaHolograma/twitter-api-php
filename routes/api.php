@@ -18,6 +18,8 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('tweets')
         ->controller(TweetController::class)
         ->group(function () {
-            Route::post('/', 'processTweet')->name('api.process-tweet');
+            Route::post('/process', 'processTweet')->name('api.process-tweet');
+            Route::post('/', 'create')->name('api.create-tweet');
+            Route::put('/', 'update')->name('api.update-tweet');
         });
 });
