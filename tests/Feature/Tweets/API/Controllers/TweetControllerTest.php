@@ -3,23 +3,62 @@
 namespace Tests\Feature\Tweets\API\Controllers;
 
 use App\Events\Tweets\TweetCreatedEvent;
+use Domain\Shared\DataTransferObjects\UserData;
 use Domain\Shared\Models\User;
 use Domain\Tweets\Models\Tweet;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 
 uses(RefreshDatabase::class)->group('api');
+
+it('should retrieve the users that likes the selected tweet paginated', function () {
+    actingAsApiUser();
+
+    $tweet = Tweet::factory()->has(User::factory()->count(5), 'likes')->create();
+
+    getJson(route('api.tweet-likes', ['tweet' => $tweet->id]))
+        ->assertOk()
+        ->assertJson([
+            'meta' => [
+                'current_page' => 1,
+                'first_page_url' => route('api.tweet-likes', ['tweet' => $tweet->id]) . '?page=1',
+                'last_page_url' => route('api.tweet-likes', ['tweet' => $tweet->id]) . '?page=1',
+                'total' => $tweet->likes()->count()
+            ]
+        ]);
+});
+
+
+it('should retrieve the users that likes the selected tweet paginated even when is empty', function () {
+    actingAsApiUser();
+
+    $tweet = Tweet::factory()->create();
+
+    getJson(route('api.tweet-likes', ['tweet' => $tweet->id]))
+        ->assertOk()
+        ->assertJson([
+            'meta' => [
+                'current_page' => 1,
+                'first_page_url' => route('api.tweet-likes', ['tweet' => $tweet->id]) . '?page=1',
+                'last_page_url' => route('api.tweet-likes', ['tweet' => $tweet->id]) . '?page=1',
+                'total' => $tweet->likes()->count()
+            ]
+        ]);
+});
+
 
 it('should throw validation errors when data is wrong on tweet creation', function () {
     actingAsApiUser();
     assertDatabaseCount('tweets', 0);
 
     postJson(route('api.process-tweet'), [
-        'text' => fake()->realText(150),
+        'text' => fake()->realText(170),
         'reply_settings' => 'TO THE WORLD',
         'visible_for' => ['superman id', 'spiderman id'],
     ])->assertUnprocessable()

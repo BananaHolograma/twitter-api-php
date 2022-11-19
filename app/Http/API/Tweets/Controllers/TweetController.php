@@ -3,11 +3,13 @@
 namespace App\Http\API\Tweets\Controllers;
 
 use App\Http\Controllers\Controller;
+use Domain\Shared\DataTransferObjects\UserData;
 use Domain\Tweets\Actions\CreateTweetAction;
 use Domain\Tweets\Actions\ProcessTweetAction;
 use Domain\Tweets\Actions\UpdateTweetAction;
 use Domain\Tweets\DataTransferObjects\TweetData;
 use Domain\Tweets\DataTransferObjects\UpsertTweetData;
+use Domain\Tweets\Models\Tweet;
 
 class TweetController extends Controller
 {
@@ -17,6 +19,14 @@ class TweetController extends Controller
         private readonly UpdateTweetAction $updateTweetAction
     ) {
     }
+
+    public function likesForTweet(Tweet $tweet)
+    {
+        return UserData::collection(
+            $tweet->likes()->paginate()
+        );
+    }
+
 
     public function processTweet(UpsertTweetData $request)
     {

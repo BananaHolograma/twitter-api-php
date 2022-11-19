@@ -75,12 +75,14 @@ class User extends Authenticatable
 
     public function mutedUsers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'mutes', 'muted_user_id', 'user_id', 'id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'mutes', 'muted_user_id', 'user_id', 'id')
+            ->withTimestamps();
     }
 
     public function blockedUsers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'blocks', 'blocked_user_id', 'user_id', 'id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'blocks', 'blocked_user_id', 'user_id', 'id')
+            ->withTimestamps();
     }
 
     protected static function newFactory()

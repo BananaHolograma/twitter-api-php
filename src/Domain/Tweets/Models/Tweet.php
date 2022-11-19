@@ -87,7 +87,9 @@ class Tweet extends BaseEloquentModel
 
     public function likes(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'user_tweet_likes')->withTimestamps();
+        return $this->belongsToMany(User::class, 'user_tweet_likes')
+            ->orderBy('created_at')
+            ->withTimestamps();
     }
 
     public function getIsEditableAttribute(): bool

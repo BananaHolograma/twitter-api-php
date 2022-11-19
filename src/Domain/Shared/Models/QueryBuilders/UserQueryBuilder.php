@@ -4,6 +4,7 @@ namespace Domain\Shared\Models\QueryBuilders;
 
 use Domain\Shared\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class UserQueryBuilder extends Builder
 {
@@ -12,7 +13,7 @@ class UserQueryBuilder extends Builder
         return User::withCount([
             'followers',
             'followers as followers_count' => function (Builder $query) {
-                $query->wherePivot('accepted', true);
+                $query->where('accepted', true);
             },
         ]);
     }
@@ -22,7 +23,7 @@ class UserQueryBuilder extends Builder
         return User::withCount([
             'following',
             'following as following_count' => function (Builder $query) {
-                $query->wherePivot('accepted', true);
+                $query->where('accepted', true);
             },
         ]);
     }
@@ -30,8 +31,8 @@ class UserQueryBuilder extends Builder
     public function withPendingFollowersRequest(): self
     {
         return User::with([
-            'followers' => function (Builder $query) {
-                $query->wherePivot('accepted', false);
+            'followers' => function (BelongsToMany $query) {
+                $query->where('accepted', false);
             },
         ]);
     }
