@@ -62,7 +62,16 @@ class Tweet extends BaseEloquentModel
 
     public function metrics(): HasOne
     {
-        return $this->hasOne(TweetMetrics::class);
+        return $this->hasOne(TweetMetrics::class)->withDefault([
+            'impression_count' => 0,
+            'reply_count' => 0,
+            'like_count' => 0,
+            'retweet_count' => 0,
+            'quote_count' => 0,
+            'video_views_count' => 0,
+            'url_link_clicks' => 0,
+            'user_profile_clicks' => 0
+        ]);
     }
 
     public function authorReplied(): BelongsTo

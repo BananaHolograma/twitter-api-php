@@ -17,7 +17,6 @@ class TweetData extends Data
         public int $id,
         public string $text,
         public bool $possibly_sensitive,
-        #[WithCast(ReplySettingEnum::class)]
         public ReplySettingEnum $reply_settings,
         public TweetMetricsData $metrics,
         /** @var TweetData[] */
