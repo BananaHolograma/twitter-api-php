@@ -12,6 +12,7 @@ class UserData extends Data
         public int $id,
         public string $name,
         public string $username,
+        public string $description,
         public bool $protected,
         public CarbonImmutable|null $verified_at
     ) {
@@ -19,6 +20,13 @@ class UserData extends Data
 
     public static function fromModel(User $user): self
     {
-        return new self($user->id, $user->name, $user->username, $user->protected, $user->verified_at);
+        return new self(
+            $user->id,
+            $user->name,
+            $user->username,
+            $user->description,
+            $user->protected,
+            $user->verified_at
+        );
     }
 }

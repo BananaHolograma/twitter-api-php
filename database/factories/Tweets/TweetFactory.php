@@ -27,7 +27,10 @@ class TweetFactory extends Factory
             'text' => fake()->realText(140),
             'lang' => fake()->languageCode(),
             'possibly_sensitive' => false,
-            'source' => fake()->randomElement(['Twitter Web App', 'API v2', 'Bot']),
+            'in_reply_to_tweet_id' => null,
+            'in_reply_to_author_id' => null,
+            'retweet_from_tweet_id' => null,
+            'source' => fake()->randomElement(['Twitter Web App', 'API v1', 'API v2', 'Bot']),
             'visible_for' => [],
             'edit_controls' => [
                 'edits_remaining' => 5,
@@ -76,6 +79,27 @@ class TweetFactory extends Factory
                     'is_edit_eligible' => false,
                     'editable_until' => now()->subMinutes(5)->toDateTimeString(),
                 ],
+            ];
+        });
+    }
+
+    public function replyTo(Tweet $target_tweet, ?User $user)
+    {
+        return $this->state(function (array $attributes) use ($target_tweet, $user) {
+            return [
+                'conversation_id' => $target_tweet->id,
+                'reply_to_tweet_id' => $target_tweet->id,
+                'reply_to_author_id' => $user?->id ?? $target_tweet->author->id
+            ];
+        });
+    }
+
+    public function retweetFrom(Tweet $original_tweet)
+    {
+        return $this->state(function (array $attributes) use ($original_tweet) {
+            return [
+                ...$attributes,
+                'retweet_from_tweet_id' => $original_tweet->id
             ];
         });
     }

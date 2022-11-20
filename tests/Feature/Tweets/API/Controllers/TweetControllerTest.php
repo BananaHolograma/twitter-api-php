@@ -3,10 +3,8 @@
 namespace Tests\Feature\Tweets\API\Controllers;
 
 use App\Events\Tweets\TweetCreatedEvent;
-use Domain\Shared\DataTransferObjects\UserData;
 use Domain\Shared\Models\User;
 use Domain\Tweets\Models\Tweet;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\assertDatabaseCount;

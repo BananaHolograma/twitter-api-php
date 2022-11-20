@@ -27,7 +27,6 @@ class TweetController extends Controller
         );
     }
 
-
     public function processTweet(UpsertTweetData $request)
     {
         $tweet = $this->processTweetAction->execute(auth('api')->user(), $request);

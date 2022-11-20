@@ -21,7 +21,7 @@ class Tweet extends BaseEloquentModel
 
     protected $fillable = [
         'author_id', 'in_reply_to_author_id',
-        'in_reply_to_tweet_id', 'edit_history_tweet_ids',
+        'in_reply_to_tweet_id', 'retweet_from_tweet_id', 'edit_history_tweet_ids',
         'conversation_id', 'text', 'lang',
         'possibly_sensitive', 'source',
         'reply_settings', 'visible_for',
@@ -43,7 +43,7 @@ class Tweet extends BaseEloquentModel
     ];
 
     protected $appends = [
-        'is_editable',
+        'is_editable', 'retweeted'
     ];
 
     protected $dispatchesEvents = [
@@ -85,11 +85,21 @@ class Tweet extends BaseEloquentModel
         return $this->belongsTo(User::class, 'in_reply_to_tweet_id', 'id');
     }
 
+    public function retweetFrom(): BelongsTo
+    {
+        return $this->belongsTo(Tweet::class, 'retweet_from_tweet_id', 'id');
+    }
+
     public function likes(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_tweet_likes')
             ->orderBy('created_at')
             ->withTimestamps();
+    }
+
+    public function getRetweetedAttribute(): bool
+    {
+        return isset($this->retweet_from_tweet_id);
     }
 
     public function getIsEditableAttribute(): bool
