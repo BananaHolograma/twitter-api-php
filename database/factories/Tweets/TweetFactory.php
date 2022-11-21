@@ -7,6 +7,7 @@ use Domain\Tweets\Enums\ReplySettingEnum;
 use Domain\Tweets\Models\Tweet;
 use Domain\Tweets\Models\TweetMetrics;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Domain\Models\Tweets\Tweet>
@@ -99,6 +100,10 @@ class TweetFactory extends Factory
         return $this->state(function (array $attributes) use ($original_tweet) {
             return [
                 ...$attributes,
+                ...Arr::only(
+                    $original_tweet->toArray(),
+                    ['text', 'lang', 'possibly_sensitive']
+                ),
                 'retweet_from_tweet_id' => $original_tweet->id
             ];
         });
