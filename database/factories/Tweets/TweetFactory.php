@@ -90,7 +90,7 @@ class TweetFactory extends Factory
             return [
                 'conversation_id' => $target_tweet->id,
                 'reply_to_tweet_id' => $target_tweet->id,
-                'reply_to_author_id' => $user?->id ?? $target_tweet->author->id
+                'reply_to_author_id' => $user?->id ?? $target_tweet->author->id,
             ];
         });
     }
@@ -104,7 +104,7 @@ class TweetFactory extends Factory
                     $original_tweet->toArray(),
                     ['text', 'lang', 'possibly_sensitive']
                 ),
-                'retweet_from_tweet_id' => $original_tweet->id
+                'retweet_from_tweet_id' => $original_tweet->id,
             ];
         });
     }

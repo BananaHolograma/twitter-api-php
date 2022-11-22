@@ -13,7 +13,7 @@ class UserQueryBuilder extends Builder
         return User::withCount([
             'followers',
             'followers as followers_count' => function (Builder $query) {
-                $query->where('accepted', true);
+                $query->whereAccepted(true);
             },
         ]);
     }
@@ -23,7 +23,7 @@ class UserQueryBuilder extends Builder
         return User::withCount([
             'following',
             'following as following_count' => function (Builder $query) {
-                $query->where('accepted', true);
+                $query->whereAccepted(true);
             },
         ]);
     }
@@ -32,7 +32,7 @@ class UserQueryBuilder extends Builder
     {
         return User::with([
             'followers' => function (BelongsToMany $query) {
-                $query->where('accepted', false);
+                $query->whereAccepted(false);
             },
         ]);
     }

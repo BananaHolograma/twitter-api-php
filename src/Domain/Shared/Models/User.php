@@ -45,8 +45,8 @@ class User extends Authenticatable
     protected $casts = [
         'id' => 'integer',
         'protected' => 'boolean',
-        'email_verified_at' => 'immutable_date',
-        'verified_at' => 'immutable_date'
+        'email_verified_at' => 'immutable_datetime',
+        'verified_at' => 'immutable_datetime',
     ];
 
     public function tweets(): HasMany
@@ -83,6 +83,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'blocks', 'blocked_user_id', 'user_id', 'id')
             ->withTimestamps();
+    }
+
+    public function isVerified(): bool
+    {
+        return isset($this->verified_at);
+    }
+
+    public function isNotVerified(): bool
+    {
+        return is_null($this->verified_at);
     }
 
     protected static function newFactory()

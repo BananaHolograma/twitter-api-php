@@ -43,7 +43,7 @@ class Tweet extends BaseEloquentModel
     ];
 
     protected $appends = [
-        'is_editable', 'retweeted'
+        'is_editable', 'retweeted',
     ];
 
     protected $dispatchesEvents = [
@@ -71,7 +71,7 @@ class Tweet extends BaseEloquentModel
                 'quote_count' => 0,
                 'video_views_count' => 0,
                 'url_link_clicks' => 0,
-                'user_profile_clicks' => 0
+                'user_profile_clicks' => 0,
             ]);
     }
 
