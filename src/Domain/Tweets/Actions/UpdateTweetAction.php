@@ -11,8 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateTweetAction
 {
-    public function __construct(private readonly CreateTweetAction $createTweetAction)
-    {
+    public function __construct(
+        private readonly CreateTweetAction $createTweetAction,
+        private readonly CheckUsersAreFromAuthorCircleAction $checkUsersAreFromAuthorCircleAction
+    ) {
     }
 
     public function execute(User $author, UpsertTweetData $data): Tweet
@@ -44,6 +46,8 @@ class UpdateTweetAction
 
     private function ensureCanBeEdited(User $author, UpsertTweetData $data): Tweet
     {
+        $this->checkUsersAreFromAuthorCircleAction->execute($author, $data->visible_for);
+
         $tweet = Tweet::select('id', 'author_id', 'edit_controls')->find($data->id);
 
         if (! $tweet->author->is($author)) {
