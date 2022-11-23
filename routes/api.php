@@ -45,5 +45,8 @@ Route::middleware('auth:api')->group(function () {
             Route::post('process', 'processTweet')->name('api.process-tweet');
             Route::post('/', 'create')->name('api.create-tweet');
             Route::put('/', 'update')->name('api.update-tweet');
+
+            Route::put('/{user}/like/{tweet}', 'like')->name('api.tweet-like');
+            Route::delete('/{user}/like/{tweet}', 'deleteLike')->name('api.delete-tweet-like');
         });
 });

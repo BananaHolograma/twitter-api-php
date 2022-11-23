@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Tweets\API\Controllers;
 
-use App\Events\Tweets\TweetCreatedEvent;
 use Domain\Shared\Models\User;
+use Domain\Tweets\Events\TweetCreatedEvent;
 use Domain\Tweets\Models\Tweet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Tweets;
+namespace Domain\Tweets\Events;
 
 use Domain\Tweets\Models\Tweet;
 use Illuminate\Broadcasting\InteractsWithSockets;

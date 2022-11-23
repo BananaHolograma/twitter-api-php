@@ -2,12 +2,12 @@
 
 namespace Domain\Tweets\Models;
 
-use App\Events\Tweets\TweetCreatedEvent;
 use Carbon\Carbon;
 use Domain\Shared\Models\BaseEloquentModel;
 use Domain\Shared\Models\User;
 use Domain\Shared\Traits\HasSnowflakeAsPrimaryKey;
 use Domain\Tweets\Enums\ReplySettingEnum;
+use Domain\Tweets\Events\TweetCreatedEvent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -93,6 +93,7 @@ class Tweet extends BaseEloquentModel
     public function likes(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_tweet_likes')
+            ->using(UserTweetLike::class)
             ->orderBy('created_at')
             ->withTimestamps();
     }
