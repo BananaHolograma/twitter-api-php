@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'description' => fake()->realTextBetween(10, 100),
             'location' => fake()->city(),
             'protected' => fake()->boolean(30),
-            'url' => fake()->boolean() ? fake()->url() : null,
+            'url' => fake()->optional()->url(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];

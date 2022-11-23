@@ -111,7 +111,7 @@ class Tweet extends BaseEloquentModel
 
     public function getEditHistoryAttribute(): Collection
     {
-        if (isset($this->edit_history_tweet_ids) && count($this->edit_history_tweet_ids)) {
+        if (isset($this->edit_history_tweet_ids) && filled($this->edit_history_tweet_ids)) {
             return self::onlyTrashed()
                 ->whereIn('id', $this->edit_history_tweet_ids)
                 ->orderBy('deleted_at')

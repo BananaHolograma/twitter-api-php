@@ -9,7 +9,7 @@ class CheckUsersAreFromAuthorCircleAction
 {
     public function execute(User $author, array $ids = []): void
     {
-        if (count($ids)) {
+        if (filled($ids)) {
             $follower_ids = $author->followers()->allRelatedIds();
             $users_not_in_author_circle = [];
 
@@ -19,7 +19,7 @@ class CheckUsersAreFromAuthorCircleAction
                 }
             }
 
-            if (count($users_not_in_author_circle)) {
+            if (filled($users_not_in_author_circle)) {
                 throw new UsersDoesNotBelongToAuthorCircle($author, $users_not_in_author_circle);
             }
         }

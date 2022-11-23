@@ -16,6 +16,7 @@
         "laravel/passport": "^11.3",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "predis/predis": "^2.0",
         "spatie/laravel-data": "^2.0"
     },
     "require-dev": {
