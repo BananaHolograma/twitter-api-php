@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Unit\Domain\Tweets\Actions;
+
 use Domain\Shared\Models\User;
 use Domain\Tweets\Actions\VerifyAccountAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Unit\Domain\Shared\Actions;
+
 use Domain\Shared\Actions\CheckUsersAreFromAuthorCircleAction;
 use Domain\Shared\Exceptions\UsersDoesNotBelongToAuthorCircle;
 use Domain\Shared\Models\User;

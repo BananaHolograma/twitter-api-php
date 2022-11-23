@@ -23,6 +23,7 @@ it('should retrieve the users that likes the selected tweet paginated', function
     getJson(route('api.tweet-likes', ['tweet' => $tweet->id]))
         ->assertOk()
         ->assertJson([
+            'data' => $tweet->likes->pluck('id')->map(fn ($id) => compact('id'))->all(),
             'meta' => [
                 'current_page' => 1,
                 'first_page_url' => route('api.tweet-likes', ['tweet' => $tweet->id]).'?page=1',

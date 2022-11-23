@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\API\Shared\Controllers\UserController;
 use App\Http\API\Tweets\Controllers\TweetController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->group(function () {
+    Route::prefix('users')
+        ->controller(UserController::class)
+        ->group(function () {
+            Route::get('/followers', 'followers')->name('api.users-followers');
+            Route::get('/following', 'following')->name('api.users-following');
+            Route::get('/mutes', 'mutes')->name('api.users-mutes');
+            Route::get('/blocks', 'blocks')->name('api.users-blocks');
+            Route::get('/likes', 'likedTweets')->name('api.users-liked-tweets');
+            Route::get('tweets', 'tweets')->name('api.users-tweets');
+        });
+
     Route::prefix('tweets')
         ->controller(TweetController::class)
         ->group(function () {

@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Unit\Domain\Tweets\Actions;
+
 use Carbon\Carbon;
 use Domain\Shared\Models\User;
 use Domain\Tweets\Actions\ProcessTweetAction;
