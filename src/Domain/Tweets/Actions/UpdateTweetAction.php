@@ -2,6 +2,7 @@
 
 namespace Domain\Tweets\Actions;
 
+use Domain\Shared\Actions\CheckUsersAreFromAuthorCircleAction;
 use Domain\Shared\Models\User;
 use Domain\Tweets\DataTransferObjects\UpsertTweetData;
 use Domain\Tweets\Exceptions\TweetCannotBeEditAnymore;
@@ -50,11 +51,11 @@ class UpdateTweetAction
 
         $tweet = Tweet::select('id', 'author_id', 'edit_controls')->find($data->id);
 
-        if (! $tweet->author->is($author)) {
+        if (!$tweet->author->is($author)) {
             throw new TweetDoesNotBelongsToAuthor("The tweet {$tweet->id} does not belongs to user {$author->id}, it cannot be edited");
         }
 
-        if (! $tweet->is_editable) {
+        if (!$tweet->is_editable) {
             throw new TweetCannotBeEditAnymore($tweet);
         }
 
