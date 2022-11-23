@@ -8,6 +8,7 @@ use Database\Factories\Shared\UserFactory;
 use Domain\Shared\Models\QueryBuilders\UserQueryBuilder;
 use Domain\Shared\Traits\HasSnowflakeAsPrimaryKey;
 use Domain\Tweets\Models\Tweet;
+use Domain\Tweets\Models\UserTweetLike;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -56,7 +57,9 @@ class User extends Authenticatable
 
     public function likedTweets(): BelongsToMany
     {
-        return $this->belongsToMany(Tweet::class, 'user_tweet_likes')->withTimestamps();
+        return $this->belongsToMany(Tweet::class, 'user_tweet_likes')
+            ->using(UserTweetLike::class)
+            ->withTimestamps();
     }
 
     public function followers(): BelongsToMany

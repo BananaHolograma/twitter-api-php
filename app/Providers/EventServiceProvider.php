@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Domain\Tweets\Subscribers\TweetEventSubscriber;
+use Domain\Tweets\Subscribers\TweetMetricsEventSubscriber;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,6 +24,7 @@ class EventServiceProvider extends ServiceProvider
 
     protected $subscribe = [
         TweetEventSubscriber::class,
+        TweetMetricsEventSubscriber::class,
     ];
 
     /**

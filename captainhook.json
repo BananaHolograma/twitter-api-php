@@ -23,6 +23,7 @@
                 "options": [],
                 "conditions": []
             },
+            { "action": "git add -A && git commit --amend --no-verify" },
             {
                 "action": "./vendor/bin/sail composer static-analysis",
                 "options": [],
