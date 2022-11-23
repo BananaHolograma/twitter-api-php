@@ -9,7 +9,7 @@ class addTweetLikeAction
 {
     public function execute(User $user, Tweet $tweet): Tweet
     {
-        if (! $tweet->likes()->contains($user->id)) {
+        if (! $tweet->likes->contains($user->id)) {
             $tweet->likes()->attach($user->id);
 
             return $tweet->fresh('likes');

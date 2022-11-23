@@ -4,7 +4,6 @@ namespace App\Http\API\Tweets\Controllers;
 
 use App\Http\Controllers\Controller;
 use Domain\Shared\DataTransferObjects\UserData;
-use Domain\Shared\Models\User;
 use Domain\Tweets\Actions\CreateTweetAction;
 use Domain\Tweets\Actions\DeleteTweetLikeAction;
 use Domain\Tweets\Actions\ProcessTweetAction;
@@ -13,6 +12,7 @@ use Domain\Tweets\Actions\UpdateTweetAction;
 use Domain\Tweets\DataTransferObjects\TweetData;
 use Domain\Tweets\DataTransferObjects\UpsertTweetData;
 use Domain\Tweets\Models\Tweet;
+use Illuminate\Http\Request;
 
 class TweetController extends Controller
 {
@@ -57,17 +57,17 @@ class TweetController extends Controller
         return TweetData::fromModel($tweet)->toJson();
     }
 
-    public function like(User $user, Tweet $tweet)
+    public function like(Request $request, Tweet $tweet)
     {
-        $tweet_updated = $this->toggleLikeOnTweetAction->execute($user, $tweet);
+        $tweet_updated = $this->toggleLikeOnTweetAction->execute($request->user(), $tweet);
 
         return TweetData::fromModel($tweet_updated)->toJson();
     }
 
-    public function deleteLike(User $user, Tweet $tweet)
+    public function deleteLike(Request $request, Tweet $tweet)
     {
-        $tweet_updated = $this->deleteTweetLikeAction->execute($user, $tweet);
+        $this->deleteTweetLikeAction->execute($request->user(), $tweet);
 
-        return TweetData::fromModel($tweet_updated)->toJson();
+        return response()->noContent();
     }
 }

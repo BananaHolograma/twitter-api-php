@@ -9,7 +9,7 @@ class DeleteTweetLikeAction
 {
     public function execute(User $user, Tweet $tweet): Tweet
     {
-        if ($tweet->likes()->contains($user->id)) {
+        if ($tweet->likes->contains($user->id)) {
             $tweet->likes()->detach([$user->id]);
 
             return $tweet->fresh('likes');

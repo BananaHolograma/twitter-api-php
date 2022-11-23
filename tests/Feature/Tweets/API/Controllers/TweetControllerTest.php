@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
+use function Pest\Laravel\delete;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
+use function Pest\Laravel\putJson;
 
 uses(RefreshDatabase::class)->group('api');
 
@@ -104,4 +106,38 @@ it('should update a tweet succesfully if exists', function () {
     ])->assertOk();
 
     assertDatabaseCount('tweets', 2);
+});
+
+it('should toggle the like for the selected tweet from specific user', function () {
+    $user = User::factory()->create();
+
+    actingAsApiUser($user);
+
+    $tweet = Tweet::factory()->create();
+
+    assertFalse($tweet->likes->contains($user));
+
+    putJson(route('api.tweet-like', ['tweet' => $tweet->id]))
+        ->assertOk();
+
+    assertTrue($tweet->fresh('likes')->likes->contains($user));
+
+    putJson(route('api.tweet-like', ['tweet' => $tweet->id]))
+        ->assertOk();
+
+    assertFalse($tweet->fresh('likes')->likes->contains($user));
+});
+
+it('should delete the like for the selected tweet', function () {
+    $user = User::factory()->create();
+
+    $tweet = Tweet::factory()->create();
+    $tweet->likes()->attach($user->id);
+
+    actingAsApiUser($user);
+
+    delete(route('api.delete-tweet-like', ['tweet' => $tweet->id]))
+        ->assertNoContent();
+
+    assertFalse($tweet->fresh('likes')->likes->contains($user));
 });
