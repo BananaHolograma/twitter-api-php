@@ -13,14 +13,14 @@ it('should retrieve the muted users paginated for the authenticated user even wh
 
     actingAsApiUser($user);
 
-    getJson(route('api.users-mutes'))
+    getJson(route('api.user-mutes'))
         ->assertOk()
         ->assertJson([
             'data' => [],
             'meta' => [
                 'current_page' => 1,
-                'first_page_url' => route('api.users-mutes').'?page=1',
-                'last_page_url' => route('api.users-mutes').'?page=1',
+                'first_page_url' => route('api.user-mutes').'?page=1',
+                'last_page_url' => route('api.user-mutes').'?page=1',
                 'total' => 0,
             ],
         ]);
@@ -35,14 +35,14 @@ it('should retrieve the muted users paginated for the authenticated user', funct
 
     $user->mutedUsers()->attach($muted_users->pluck('id'));
 
-    getJson(route('api.users-mutes'))
+    getJson(route('api.user-mutes'))
         ->assertOk()
         ->assertJson([
             'data' => $muted_users->pluck('id')->map(fn ($id) => compact('id'))->all(),
             'meta' => [
                 'current_page' => 1,
-                'first_page_url' => route('api.users-mutes').'?page=1',
-                'last_page_url' => route('api.users-mutes').'?page=1',
+                'first_page_url' => route('api.user-mutes').'?page=1',
+                'last_page_url' => route('api.user-mutes').'?page=1',
                 'total' => $muted_users->count(),
             ],
         ]);
@@ -53,14 +53,14 @@ it('should retrieve the blocked users paginated for the authenticated user even 
 
     actingAsApiUser($user);
 
-    getJson(route('api.users-blocks'))
+    getJson(route('api.user-blocks'))
         ->assertOk()
         ->assertJson([
             'data' => [],
             'meta' => [
                 'current_page' => 1,
-                'first_page_url' => route('api.users-blocks').'?page=1',
-                'last_page_url' => route('api.users-blocks').'?page=1',
+                'first_page_url' => route('api.user-blocks').'?page=1',
+                'last_page_url' => route('api.user-blocks').'?page=1',
                 'total' => 0,
             ],
         ]);
@@ -75,14 +75,14 @@ it('should retrieve the blocked users paginated for the authenticated user', fun
 
     $user->blockedUsers()->attach($blocked_users->pluck('id'));
 
-    getJson(route('api.users-blocks'))
+    getJson(route('api.user-blocks'))
         ->assertOk()
         ->assertJson([
             'data' => $blocked_users->pluck('id')->map(fn ($id) => compact('id'))->all(),
             'meta' => [
                 'current_page' => 1,
-                'first_page_url' => route('api.users-blocks').'?page=1',
-                'last_page_url' => route('api.users-blocks').'?page=1',
+                'first_page_url' => route('api.user-blocks').'?page=1',
+                'last_page_url' => route('api.user-blocks').'?page=1',
                 'total' => $blocked_users->count(),
             ],
         ]);

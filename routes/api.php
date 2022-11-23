@@ -19,12 +19,12 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('users')
         ->controller(UserController::class)
         ->group(function () {
-            Route::get('/followers', 'followers')->name('api.users-followers');
-            Route::get('/following', 'following')->name('api.users-following');
-            Route::get('/mutes', 'mutes')->name('api.users-mutes');
-            Route::get('/blocks', 'blocks')->name('api.users-blocks');
-            Route::get('/likes', 'likedTweets')->name('api.users-liked-tweets');
-            Route::get('tweets', 'tweets')->name('api.users-tweets');
+            Route::get('followers', 'followers')->name('api.user-followers');
+            Route::get('following', 'following')->name('api.user-following');
+            Route::get('mutes', 'mutes')->name('api.user-mutes');
+            Route::get('blocks', 'blocks')->name('api.user-blocks');
+            Route::get('likes', 'likedTweets')->name('api.user-liked-tweets');
+            Route::get('tweets', 'tweets')->name('api.user-tweets');
         });
 
     Route::prefix('tweets')
@@ -33,7 +33,7 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/{tweet}/likes', 'likesForTweet')->name('api.tweet-likes');
             Route::get('/{tweet}/replies', 'repliesForTweet')->name('api.tweet-replies');
 
-            Route::post('/process', 'processTweet')->name('api.process-tweet');
+            Route::post('process', 'processTweet')->name('api.process-tweet');
             Route::post('/', 'create')->name('api.create-tweet');
             Route::put('/', 'update')->name('api.update-tweet');
         });
