@@ -20,6 +20,7 @@
         "spatie/laravel-data": "^2.0"
     },
     "require-dev": {
+        "captainhook/captainhook": "^5.11",
         "captainhook/plugin-composer": "^5.3",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
