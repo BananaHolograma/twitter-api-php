@@ -22,9 +22,13 @@ class TweetController extends Controller
 
     public function likesForTweet(Tweet $tweet)
     {
-        return UserData::collection(
-            $tweet->likes()->paginate()
-        );
+        return UserData::collection($tweet->likes()->paginate());
+    }
+
+    public function repliesForTweet(Tweet $tweet)
+    {
+        return TweetData::collection($tweet->replies()->paginate())
+            ->include('replies');
     }
 
     public function processTweet(UpsertTweetData $request)

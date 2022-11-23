@@ -31,6 +31,7 @@ Route::middleware('auth:api')->group(function () {
         ->controller(TweetController::class)
         ->group(function () {
             Route::get('/{tweet}/likes', 'likesForTweet')->name('api.tweet-likes');
+            Route::get('/{tweet}/replies', 'repliesForTweet')->name('api.tweet-replies');
 
             Route::post('/process', 'processTweet')->name('api.process-tweet');
             Route::post('/', 'create')->name('api.create-tweet');
