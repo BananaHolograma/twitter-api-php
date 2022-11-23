@@ -1,4 +1,8 @@
 {
+    "config": {
+        "run-mode": "docker",
+        "run-exec": "./vendor/bin/sail"
+    },
     "commit-msg": {
         "enabled": false,
         "actions": []
@@ -15,12 +19,12 @@
         "enabled": true,
         "actions": [
             {
-                "action": "composer format",
+                "action": "./vendor/bin/sail composer format",
                 "options": [],
                 "conditions": []
             },
             {
-                "action": "composer static-analysis",
+                "action": "./vendor/bin/sail composer static-analysis",
                 "options": [],
                 "conditions": []
             }
