@@ -24,13 +24,13 @@ it('should retrieve the users that likes the selected tweet paginated', function
         ->assertOk()
         ->assertJson([
             'data' => $tweet->likes->pluck('id')->map(fn ($id) => compact('id'))->all(),
-            'meta' => [
-                'current_page' => 1,
-                'first_page_url' => route('api.tweet-likes', ['tweet' => $tweet->id]).'?page=1',
-                'last_page_url' => route('api.tweet-likes', ['tweet' => $tweet->id]).'?page=1',
-                'total' => $tweet->likes()->count(),
-            ],
-        ]);
+        ])->assertPaginated(
+            route('api.tweet-likes', ['tweet' => $tweet->id]),
+            1,
+            1,
+            1,
+            $tweet->likes()->count()
+        );
 });
 
 it('should retrieve the users that likes the selected tweet paginated even when is empty', function () {
@@ -40,14 +40,8 @@ it('should retrieve the users that likes the selected tweet paginated even when 
 
     getJson(route('api.tweet-likes', ['tweet' => $tweet->id]))
         ->assertOk()
-        ->assertJson([
-            'meta' => [
-                'current_page' => 1,
-                'first_page_url' => route('api.tweet-likes', ['tweet' => $tweet->id]).'?page=1',
-                'last_page_url' => route('api.tweet-likes', ['tweet' => $tweet->id]).'?page=1',
-                'total' => $tweet->likes()->count(),
-            ],
-        ]);
+        ->assertJson(['data' => []])
+        ->assertPaginated(route('api.tweet-likes', ['tweet' => $tweet->id]), 1, 1, 1, 0);
 });
 
 it('should throw validation errors when data is wrong on tweet creation', function () {
