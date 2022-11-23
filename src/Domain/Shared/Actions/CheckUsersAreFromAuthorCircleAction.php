@@ -2,8 +2,8 @@
 
 namespace Domain\Shared\Actions;
 
-use Domain\Shared\Models\User;
 use Domain\Shared\Exceptions\UsersDoesNotBelongToAuthorCircle;
+use Domain\Shared\Models\User;
 
 class CheckUsersAreFromAuthorCircleAction
 {
@@ -14,7 +14,7 @@ class CheckUsersAreFromAuthorCircleAction
             $users_not_in_author_circle = [];
 
             foreach ($ids as $id) {
-                if (!$follower_ids->contains($id)) {
+                if (! $follower_ids->contains($id)) {
                     $users_not_in_author_circle[] = $id;
                 }
             }

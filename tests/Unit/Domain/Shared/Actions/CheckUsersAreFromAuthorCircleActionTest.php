@@ -1,12 +1,11 @@
 <?php
 
-use Domain\Shared\Models\User;
 use Domain\Shared\Actions\CheckUsersAreFromAuthorCircleAction;
 use Domain\Shared\Exceptions\UsersDoesNotBelongToAuthorCircle;
+use Domain\Shared\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class)->group('domain/shared');
-
 
 /**
  * @doesNotPerformAssertions
@@ -24,7 +23,7 @@ it('should throw exception if some user does not belongs to author circle', func
     $user_not_in_circle = User::factory()->create();
 
     expect(
-        fn () =>  app(CheckUsersAreFromAuthorCircleAction::class)->execute(
+        fn () => app(CheckUsersAreFromAuthorCircleAction::class)->execute(
             $author,
             $author->followers()->allRelatedIds()->merge([$user_not_in_circle->id])->all()
         )
