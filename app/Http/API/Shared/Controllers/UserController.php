@@ -10,31 +10,31 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function tweets(Request $request, ?User $user = null)
     {
-        return TweetData::collection($user ?? $request->user('api')->tweets()->paginate());
+        $user = $user ?? $request->user('api');
+
+        return TweetData::collection($user->tweets()->paginate());
     }
 
     public function likedTweets(Request $request, ?User $user = null)
     {
-        return TweetData::collection($user ?? $request->user('api')->likedTweets()->paginate());
+        $user = $user ?? $request->user('api');
+
+        return TweetData::collection($user->likedTweets()->paginate());
     }
 
     public function mutes(Request $request, ?User $user = null)
     {
-        return UserData::collection(
-            $user ?? $request->user('api')->mutedUsers()->paginate()
-        );
+        $user = $user ?? $request->user('api');
+
+        return UserData::collection($user->mutedUsers()->paginate());
     }
 
     public function blocks(Request $request, ?User $user = null)
     {
-        return UserData::collection(
-            $user ?? $request->user('api')->blockedUsers()->paginate()
-        );
+        $user = $user ?? $request->user('api');
+
+        return UserData::collection($user->blockedUsers()->paginate());
     }
 }

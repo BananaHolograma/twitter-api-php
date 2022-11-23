@@ -32,8 +32,6 @@ Route::middleware('auth:api')->group(function () {
         ->group(function () {
             Route::get('{user}/followers', 'followers')->name('api.user-followers');
             Route::get('{user}/following', 'following')->name('api.user-following');
-            Route::get('{user}/mutes', 'mutes')->name('api.user-mutes');
-            Route::get('{user}/blocks', 'blocks')->name('api.user-blocks');
             Route::get('{user}/likes', 'likedTweets')->name('api.user-liked-tweets');
             Route::get('{user}/tweets', 'tweets')->name('api.user-tweets');
         });
