@@ -1,8 +1,4 @@
 {
-    "config": {
-        "run-mode": "docker",
-        "run-exec": "./vendor/bin/sail"
-    },
     "commit-msg": {
         "enabled": false,
         "actions": []
@@ -11,7 +7,7 @@
         "enabled": true,
         "actions": [
             {
-                "action": "composer pest-run"
+                "action": "./vendor/bin/sail composer pest-run"
             }
         ]
     },
