@@ -50,6 +50,7 @@
     },
     "scripts": {
         "static-analysis": "./vendor/bin/phpstan analyse --ansi --memory-limit 512M",
+        "pest-run": "./vendor/bin/pest",
         "format": "./vendor/bin/pint",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

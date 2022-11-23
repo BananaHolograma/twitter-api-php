@@ -7,7 +7,7 @@
         "enabled": true,
         "actions": [
             {
-                "action": "./vendor/bin/pest"
+                "action": "sail composer pest-run"
             }
         ]
     },
