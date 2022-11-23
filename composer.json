@@ -20,6 +20,7 @@
         "spatie/laravel-data": "^2.0"
     },
     "require-dev": {
+        "captainhook/plugin-composer": "^5.3",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
@@ -48,9 +49,12 @@
         }
     },
     "scripts": {
+        "static-analysis": "./vendor/bin/phpstan analyse --ansi --memory-limit 512M",
+        "format": "./vendor/bin/pint",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "vendor/bin/captainhook install -f -s"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -72,7 +76,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "captainhook/plugin-composer": true
         }
     },
     "minimum-stability": "dev",
