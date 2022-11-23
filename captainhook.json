@@ -21,9 +21,13 @@
             {
                 "action": "./vendor/bin/sail composer format",
                 "options": [],
-                "conditions": []
+                "conditions": [
+                    {
+                        "exec": "\\CaptainHook\\App\\Hook\\Condition\\FileStaged\\OfType",
+                        "args": ["php"]
+                    }
+                ]
             },
-            { "action": "git add -A && git commit --amend --no-verify" },
             {
                 "action": "./vendor/bin/sail composer static-analysis",
                 "options": [],
