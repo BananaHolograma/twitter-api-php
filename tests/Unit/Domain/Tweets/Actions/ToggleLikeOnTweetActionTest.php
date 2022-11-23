@@ -9,7 +9,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class)->group('domain/tweets');
 
-
 it('should attach a new like if tweet does not contain this user', function () {
     $tweet = Tweet::factory()->has(User::factory()->count(3), 'likes')->create();
     $new_user_like = User::factory()->create();
@@ -20,7 +19,6 @@ it('should attach a new like if tweet does not contain this user', function () {
 
     assertTrue($updated_tweet->likes->contains($new_user_like));
 });
-
 
 it('should detach the like if tweet likes contains this user', function () {
     $tweet = Tweet::factory()->has(User::factory()->count(3), 'likes')->create();

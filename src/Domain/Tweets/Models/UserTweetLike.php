@@ -10,7 +10,6 @@ class UserTweetLike extends Pivot
 
     protected $fillable = ['user_id', 'tweet_id'];
 
-
     protected $dispatches = [
         'created' => TweetLikeCreated::class,
         'deleted' => TweetLikeDeleted::class,

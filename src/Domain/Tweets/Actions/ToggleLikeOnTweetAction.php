@@ -12,7 +12,8 @@ class ToggleLikeOnTweetAction
         private readonly DeleteTweetLikeAction $deleteTweetLikeAction
     ) {
     }
-    public function execute(User $user, Tweet $tweet,): Tweet
+
+    public function execute(User $user, Tweet $tweet): Tweet
     {
         $tweet->likes()->toggle([$user->id]);
 
