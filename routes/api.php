@@ -16,15 +16,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->group(function () {
+    Route::prefix('me')
+        ->controller(UserController::class)
+        ->group(function () {
+            Route::get('followers', 'followers')->name('api.me-followers');
+            Route::get('following', 'following')->name('api.me-following');
+            Route::get('mutes', 'mutes')->name('api.me-mutes');
+            Route::get('blocks', 'blocks')->name('api.me-blocks');
+            Route::get('likes', 'likedTweets')->name('api.me-liked-tweets');
+            Route::get('tweets', 'tweets')->name('api.me-tweets');
+        });
+
     Route::prefix('users')
         ->controller(UserController::class)
         ->group(function () {
-            Route::get('followers', 'followers')->name('api.user-followers');
-            Route::get('following', 'following')->name('api.user-following');
-            Route::get('mutes', 'mutes')->name('api.user-mutes');
-            Route::get('blocks', 'blocks')->name('api.user-blocks');
-            Route::get('likes', 'likedTweets')->name('api.user-liked-tweets');
-            Route::get('tweets', 'tweets')->name('api.user-tweets');
+            Route::get('{user}/followers', 'followers')->name('api.user-followers');
+            Route::get('{user}/following', 'following')->name('api.user-following');
+            Route::get('{user}/mutes', 'mutes')->name('api.user-mutes');
+            Route::get('{user}/blocks', 'blocks')->name('api.user-blocks');
+            Route::get('{user}/likes', 'likedTweets')->name('api.user-liked-tweets');
+            Route::get('{user}/tweets', 'tweets')->name('api.user-tweets');
         });
 
     Route::prefix('tweets')
