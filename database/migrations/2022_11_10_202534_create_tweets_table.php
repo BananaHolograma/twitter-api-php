@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('tweets', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
             $table->foreignId('author_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('in_reply_to_author_id')->nullable()->constrained('users');
             $table->string('text', 140)->index();
             $table->json('visible_for')->nullable();
             $table->json('edit_controls')->nullable();
             $table->json('edit_history_tweet_ids')->nullable();
+            $table->json('replying_to_ids')->nullable();
             $table->string('reply_settings')->default('everyone');
             $table->string('lang', 8)->index();
             $table->boolean('possibly_sensitive')->default(false);
@@ -33,7 +33,7 @@ return new class extends Migration
         Schema::table('tweets', function (Blueprint $table) {
             $table->foreignId('conversation_id')->after('id')->nullable()->constrained('tweets');
             $table->foreignId('in_reply_to_tweet_id')
-                ->after('in_reply_to_author_id')
+                ->after('visible_for')
                 ->nullable()
                 ->constrained('tweets');
             $table->foreignId('retweet_from_tweet_id')

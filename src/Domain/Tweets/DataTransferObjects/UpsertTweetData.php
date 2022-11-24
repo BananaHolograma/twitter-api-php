@@ -10,7 +10,7 @@ class UpsertTweetData extends Data
 {
     public function __construct(
         public ?int $id,
-        public ?int $reply_to_author_id,
+        public ?array $replying_to,
         public ?int $reply_to_tweet_id,
         public string $text,
         public ?string $lang = 'en',
@@ -24,7 +24,8 @@ class UpsertTweetData extends Data
     {
         return [
             'id' => ['nullable', 'exists:tweets,id'],
-            'reply_to_author_id' => ['nullable', 'exists:users,id'],
+            'replying_to' => ['present|array'],
+            'replying_to.*' => ['exists:users,id'],
             'reply_to_tweet_id' => ['nullable', 'exists:tweets,id'],
             'text' => ['required', 'string', 'min:1', 'max:140'],
             'lang' => ['in:es,en'],

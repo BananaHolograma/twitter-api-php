@@ -23,7 +23,8 @@ class TweetData extends Data
         /** @var TweetData[] */
         #[DataCollectionOf(TweetData::class)]
         public DataCollection|Lazy $replies,
-        public UserData|Lazy|null $reply_to_author,
+        #[DataCollectionOf(UserData::class)]
+        public UserData|Lazy|null $replying_to,
         public TweetData|Lazy|null $reply_to_tweet,
         public TweetData|Lazy|null $retweeted_from,
         #[DataCollectionOf(UserData::class)]
@@ -44,8 +45,8 @@ class TweetData extends Data
             TweetMetricsData::onlyPublicMetricsFrom($tweet->metrics),
             Lazy::create(fn () => TweetData::collection($tweet->replies)),
             Lazy::when(
-                fn () => isset($tweet->reply_to_author_id),
-                fn () => UserData::fromModel($tweet->authorReplied)
+                fn () => filled($tweet->replying_to),
+                fn () => UserData::collection($tweet->replying_to)
             ),
             Lazy::when(
                 fn () => isset($tweet->reply_to_tweet_id),

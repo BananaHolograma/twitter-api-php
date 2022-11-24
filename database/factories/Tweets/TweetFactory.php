@@ -29,7 +29,6 @@ class TweetFactory extends Factory
             'lang' => fake()->languageCode(),
             'possibly_sensitive' => false,
             'in_reply_to_tweet_id' => null,
-            'in_reply_to_author_id' => null,
             'retweet_from_tweet_id' => null,
             'source' => fake()->randomElement(['Twitter Web App', 'API v1', 'API v2', 'Bot']),
             'visible_for' => [],
@@ -84,13 +83,12 @@ class TweetFactory extends Factory
         });
     }
 
-    public function replyTo(Tweet $target_tweet, ?User $user)
+    public function replyTo(Tweet $target_tweet)
     {
-        return $this->state(function (array $attributes) use ($target_tweet, $user) {
+        return $this->state(function (array $attributes) use ($target_tweet) {
             return [
                 'conversation_id' => $target_tweet->id,
                 'reply_to_tweet_id' => $target_tweet->id,
-                'reply_to_author_id' => $user?->id ?? $target_tweet->author->id,
             ];
         });
     }

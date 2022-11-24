@@ -20,7 +20,7 @@ class Tweet extends BaseEloquentModel
     use HasSnowflakeAsPrimaryKey, SoftDeletes;
 
     protected $fillable = [
-        'author_id', 'in_reply_to_author_id',
+        'author_id', 'replying_to_ids',
         'in_reply_to_tweet_id', 'retweet_from_tweet_id', 'edit_history_tweet_ids',
         'conversation_id', 'text', 'lang',
         'possibly_sensitive', 'source',
@@ -35,6 +35,7 @@ class Tweet extends BaseEloquentModel
     protected $casts = [
         'id' => 'integer',
         'edit_controls' => 'array',
+        'replying_to_ids' => 'array',
         'edit_history_tweet_ids' => 'array',
         'reply_settings' => ReplySettingEnum::class,
         'possibly_sensitive' => 'boolean',
@@ -43,7 +44,7 @@ class Tweet extends BaseEloquentModel
     ];
 
     protected $appends = [
-        'is_editable', 'retweeted',
+        'is_editable', 'retweeted', 'replying_to',
     ];
 
     protected $dispatchesEvents = [
@@ -73,11 +74,6 @@ class Tweet extends BaseEloquentModel
                 'url_link_clicks' => 0,
                 'user_profile_clicks' => 0,
             ]);
-    }
-
-    public function authorReplied(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'in_reply_to_author_id', 'id');
     }
 
     public function tweetReplied(): BelongsTo
@@ -112,11 +108,20 @@ class Tweet extends BaseEloquentModel
 
     public function getEditHistoryAttribute(): Collection
     {
-        if (isset($this->edit_history_tweet_ids) && filled($this->edit_history_tweet_ids)) {
+        if (filled($this->edit_history_tweet_ids)) {
             return self::onlyTrashed()
-                ->whereIn('id', $this->edit_history_tweet_ids)
                 ->orderBy('deleted_at')
-                ->get();
+                ->find($this->edit_history_tweet_ids);
+        }
+
+        return Collection::empty();
+    }
+
+    public function getReplyingToAttribute(): Collection
+    {
+        if (filled($this->replying_to_ids)) {
+            return User::select('id', 'username', 'verified_at')
+                ->find($this->replying_to_ids);
         }
 
         return Collection::empty();
