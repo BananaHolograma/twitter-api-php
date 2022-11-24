@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->group(function () {
     Route::prefix('developers')->controller(DeveloperController::class)
         ->group(function () {
-            Route::post('client/callback', 'handleClientCallback')->name('api.developers-callback');
+            Route::get('client/callback', 'handleClientCallback')->name('api.developers-portal.callback');
+            Route::post('client/create', 'createDeveloperClient')->name('api.developers.portal.create-client');
         });
 
     Route::prefix('me')

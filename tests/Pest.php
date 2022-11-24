@@ -12,6 +12,7 @@
 */
 
 use Domain\Shared\Models\User;
+use Illuminate\Testing\TestResponse;
 
 uses(Tests\TestCase::class)->in('Feature', 'Unit');
 
@@ -51,4 +52,20 @@ function actingAsApiUser(?User $user = null)
     $user = $user ?? User::factory()->create();
 
     return test()->actingAs($user, 'api');
+}
+
+function actingAsWebUser(?User $user = null)
+{
+    /** @var \Illuminate\Contracts\Auth\Authenticatable $user */
+    $user = $user ?? User::factory()->create();
+
+    return test()->actingAs($user, 'web');
+}
+
+function extractAuthorizationCodeFromResponse(TestResponse $response): string
+{
+    $location = parse_url($response->headers->get('location'))['query'];
+    parse_str($location, $query);
+
+    return $query['code'];
 }
