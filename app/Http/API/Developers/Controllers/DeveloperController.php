@@ -17,10 +17,9 @@ class DeveloperController extends Controller
     public function createDeveloperClient(Request $request)
     {
         $data = ClientConsumerData::fromRequest($request);
-        $client = $this->createNewClientConsumerAction->execute($data)->makeVisible('secret');
-        $token = $data->user->createToken("{$data->user->username}:{$data->name}")->accessToken;
+        $result = $this->createNewClientConsumerAction->execute($data);
 
-        return response()->json(compact('client', 'token'));
+        return $result->toJson();
     }
 
     public function handleClientCallback()
