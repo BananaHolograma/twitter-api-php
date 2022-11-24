@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\API\Developers\Controllers\DeveloperController;
 use App\Http\API\Shared\Controllers\UserController;
 use App\Http\API\Tweets\Controllers\TweetController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:api')->group(function () {
+    Route::prefix('developers')->controller(DeveloperController::class)
+        ->group(function () {
+            Route::post('client/callback', 'handleClientCallback')->name('api.developers-callback');
+        });
+
     Route::prefix('me')
         ->controller(UserController::class)
         ->group(function () {

@@ -2,6 +2,7 @@
 
 namespace Domain\Tweets\Events;
 
+use Domain\Shared\Models\User;
 use Domain\Tweets\Models\Tweet;
 use Domain\Tweets\Models\UserTweetLike;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -13,6 +14,8 @@ class TweetLikeDeletedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public User $user;
+
     public Tweet $tweet;
 
     /**
@@ -22,7 +25,8 @@ class TweetLikeDeletedEvent
      */
     public function __construct(public UserTweetLike $pivot)
     {
-        $this->tweet = $pivot->pivotParent;
+        $this->user = $pivot->user;
+        $this->tweet = $pivot->tweet;
     }
 
     /**

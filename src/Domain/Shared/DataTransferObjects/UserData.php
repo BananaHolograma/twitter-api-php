@@ -14,10 +14,10 @@ class UserData extends Data
 {
     public function __construct(
         public int $id,
-        public string $name,
         public string $username,
-        public string $description,
         public bool $protected,
+        public ?string $name,
+        public ?string $description,
         public CarbonImmutable|null $verified_at,
         #[DataCollectionOf(TweetData::class)]
         public DataCollection|Lazy $tweets,
@@ -34,10 +34,10 @@ class UserData extends Data
     {
         return new self(
             $user->id,
-            $user->name,
             $user->username,
-            $user->description,
             $user->protected,
+            $user->name,
+            $user->description,
             $user->verified_at,
             Lazy::create(fn () => TweetData::collection($user->tweets)),
             Lazy::create(fn () => TweetData::collection($user->likedTweets)),
