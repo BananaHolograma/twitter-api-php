@@ -81,6 +81,7 @@ it('should create a new tweet succesfully', function () {
     postJson(route('api.process-tweet'), [
         'text' => 'This tweet is not a tweet',
         'lang' => 'en',
+        'replying_to' => [],
         'visible_for' => [],
     ])->assertOk();
 
@@ -102,6 +103,7 @@ it('should update a tweet succesfully if exists', function () {
         'id' => $tweet->id,
         'text' => 'This tweet is not a tweet',
         'lang' => 'en',
+        'replying_to' => [],
         'visible_for' => [],
     ])->assertOk();
 
